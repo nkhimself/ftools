@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لبنیات — پنیر پروسس، چربی، ماست، پاستوریزاتور</title>
+<meta name="description" content="ابزارهای محاسباتی صنایع لبنی: بالانس پخت پنیر، بخشش چربی، پیش‌بینی پایان تخمیر ماست، لولهٔ نگهدار">
+<link rel="preload" href="vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">ابزارهای مهندسی غذا</a>
+<nav><a href="thermal.html">فرآیند حرارتی</a><a href="formulation.html">فرمولاسیون</a><a href="fitting.html">برازش مدل</a><a href="dairy.html" class="cur">لبنیات</a><a href="about.html">روش‌ها</a></nav></div></header>
+<main class="wrap">
+<h1>صنایع لبنی</h1>
+<p class="lead">چهار ابزار برای مشکلاتی که در کارخانه‌های لبنی با آزمون‌وخطا حل می‌شوند: دستور و بالانس پخت پنیر پروسس/پیتزا، استانداردسازی چربی و هزینهٔ «بخشش چربی»، پیش‌بینی پایان تخمیر ماست، و بررسی لولهٔ نگهدار پاستوریزاتور.</p>
+<div class="tabs" id="tb"><button data-tab="c">پنیر پروسس / پیتزا</button><button data-tab="f">استانداردسازی چربی</button><button data-tab="y">تخمیر ماست</button><button data-tab="h">لولهٔ نگهدار</button></div>
+
+<section data-pane="c" class="card">
+<div class="step"><b class="n">۱</b><h2>دستور پخت و بالانس بخار</h2></div>
+<p class="lead">بخار مستقیم آب به پنیر اضافه می‌کند (چند درصد!)؛ بخار غیرمستقیم (ژاکت) اضافه نمی‌کند. ابزار هر دو حالت را از روی بالانس انرژی حساب می‌کند و رطوبت نهایی را با استاندارد مقایسه می‌کند، و دستور ارزان‌ترین را هم پیدا می‌کند. اعداد نمونه‌اند؛ ترکیب مواد خودتان را از آزمایشگاه وارد کنید.</p>
+<div class="tw"><table class="edit" id="ing"></table></div>
+<div class="row"><button id="addIng">+ ماده</button><button id="exC">نمونهٔ آماده</button></div>
+<h3>شرایط پخت</h3>
+<div class="grid">
+<label class="f">روش گرمایش<select id="mode"><option value="indirect">غیرمستقیم (ژاکت)</option><option value="direct">مستقیم (تزریق بخار)</option></select></label>
+<label class="f">فشار بخار مطلق <span class="u">bar</span><input id="bp" type="number" step="0.5" value="3"></label>
+<label class="f">دمای اولیه مخلوط <span class="u">°C</span><input id="t0" type="number" step="1" value="15"></label>
+<label class="f">دمای پخت <span class="u">°C</span><input id="t1" type="number" step="1" value="85"></label>
+<label class="f">اتلاف حرارت <span class="u">%</span><input id="loss" type="number" step="1" value="5"></label>
+<label class="f">تبخیر آب <span class="u">% جرم</span><input id="evap" type="number" step="0.1" value="0"></label>
+</div>
+<h3>محدودیت‌های محصول نهایی <small class="lead">(پیش‌فرض از جست‌وجوی Gemini، تأییدنشده؛ با استاندارد ملی خودتان جایگزین کنید)</small></h3>
+<div class="grid">
+<label class="f">رطوبت حداقل %<input id="mlo" type="number" step="0.5" value="47"></label>
+<label class="f">رطوبت حداکثر %<input id="mhi" type="number" step="0.5" value="52"></label>
+<label class="f">چربی حداقل %<input id="flo" type="number" step="0.5" value="15"></label>
+<label class="f">چربی حداکثر %<input id="fhi" type="number" step="0.5" value="20"></label>
+<label class="f">پروتئین حداقل %<input id="plo" type="number" step="0.5" value="18"></label>
+<label class="f">چربی در ماده خشک (FDM) حداقل %<input id="fdm" type="number" step="0.5" value=""></label>
+</div>
+<div class="row"><button class="pri" id="runC">بالانس دستور فعلی</button><button class="pri" id="optC">دستور ارزان‌ترین</button><button id="csvC">دانلود CSV</button></div>
+<div id="msgC"></div><div id="outC"></div></section>
+
+<section data-pane="f" class="card" hidden>
+<div class="step"><b class="n">۲</b><h2>استانداردسازی چربی و هزینهٔ بخشش</h2></div>
+<p class="lead">اگر حد قانونی چربی شیر ۳٪ است و فرآیند شما نوسان دارد، باید میانگین را بالاتر از حد ببرید. هر درصد اضافه، خامه‌ای است که رایگان رفته. این ابزار میانگین بهینه، هزینهٔ سالانهٔ بخشش و اثر کم‌کردن نوسان (مثلاً با خط‌اندازی بهتر) را نشان می‌دهد.</p>
+<div class="grid">
+<label class="f">شیر خام در روز <span class="u">kg</span><input id="raw" type="number" step="any" value="30000"></label>
+<label class="f">چربی شیر خام %<input id="fr" type="number" step="0.01" value="3.6"></label>
+<label class="f">چربی شیر بی‌چربی %<input id="fs" type="number" step="0.01" value="0.05"></label>
+<label class="f">چربی خامه %<input id="fc" type="number" step="0.5" value="40"></label>
+<label class="f">حد قانونی چربی %<input id="legal" type="number" step="0.01" value="3.0"></label>
+<label class="f">میانگین فعلی چربی محصول %<input id="fnow" type="number" step="0.01" value="3.40"></label>
+<label class="f">انحراف معیار فرآیند (SD) %<input id="sd" type="number" step="0.01" value="0.10"></label>
+<label class="f">ریسک پذیرفتنی زیر حد<select id="alpha"><option value="0.05">۱ از ۲۰ (۵٪)</option><option value="0.01">۱ از ۱۰۰ (۱٪)</option><option value="0.001" selected>۱ از ۱۰۰۰</option></select></label>
+<label class="f">ارزش هر kg چربی (واحد پولی دلخواه)<input id="fv" type="number" step="any" value="1000"></label>
+<label class="f">روز کاری در سال<input id="days" type="number" step="1" value="330"></label>
+</div>
+<div class="note warn">SD باید شامل خطای آزمایش (مثلاً بوتیرومتر گربر) باشد، نه فقط نوسان خود فرآیند: از نتایج چند نمونهٔ تکراری از یک شیر، SD ابزار را جدا برآورد کنید.</div>
+<div class="row"><button class="pri" id="runF">محاسبه</button><button id="csvF">دانلود CSV</button></div>
+<div id="msgF"></div><div id="outF"></div></section>
+
+<section data-pane="y" class="card" hidden>
+<div class="step"><b class="n">۳</b><h2>پیش‌بینی پایان تخمیر ماست</h2></div>
+<p class="lead">pH را در حین تخمیر هر ۱۵–۳۰ دقیقه بخوانید و با دو ستون «زمان (دقیقه از تلقیح)، pH» وارد کنید. ابزار منحنی را برازش می‌دهد و زمان رسیدن به pH هدف را همراه بازه پیش‌بینی می‌کند. هرچه داده‌ها به pH هدف نزدیک‌تر باشد، پیش‌بینی دقیق‌تر است.</p>
+<textarea id="yd" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">pH هدف<input id="yt" type="number" step="0.05" value="4.6"></label>
+<label class="f">pH کف (حد پایین منحنی)<input id="yf" type="number" step="0.05" value="4.2"></label>
+<label class="f">فاصلهٔ نمونه‌گیری فعلی <span class="u">min</span><input id="yi" type="number" step="5" value="30"></label>
+</div>
+<h3>ظرفیت مخزن</h3>
+<div class="grid">
+<label class="f">تعداد مخزن تخمیر<input id="tk" type="number" step="1" value="3"></label>
+<label class="f">پر کردن، گرمایش و تلقیح <span class="u">min</span><input id="tfill" type="number" step="5" value="60"></label>
+<label class="f">خنک‌کردن و تخلیه <span class="u">min</span><input id="tcool" type="number" step="5" value="75"></label>
+<label class="f">CIP <span class="u">min</span><input id="tcip" type="number" step="5" value="45"></label>
+<label class="f">ساعت کار در روز<input id="hrs" type="number" step="1" value="20"></label>
+<label class="f">ظرفیت هر مخزن <span class="u">kg</span><input id="tcap" type="number" step="100" value="5000"></label>
+</div>
+<div class="row"><input type="file" id="ydf" accept=".csv,.txt" style="max-width:260px"><button id="yex">نمونهٔ آماده</button><button class="pri" id="runY">پیش‌بینی</button><button id="csvY">دانلود CSV</button></div>
+<div id="msgY"></div><div id="outY"></div></section>
+
+<section data-pane="h" class="card" hidden>
+<div class="step"><b class="n">۴</b><h2>لولهٔ نگهدار پاستوریزاتور</h2></div>
+<p class="lead">زمان ماند سریع‌ترین ذره (نه میانگین) باید از حداقل لازم بیشتر باشد. در جریان آرام سریع‌ترین ذره دو برابر سرعت میانگین می‌رود.</p>
+<div class="grid">
+<label class="f">دبی <span class="u">L/h</span><input id="hq" type="number" step="100" value="3000"></label>
+<label class="f">قطر داخلی لوله <span class="u">mm</span><input id="hd" type="number" step="0.5" value="50"></label>
+<label class="f">طول لوله <span class="u">m</span><input id="hl" type="number" step="0.5" value="10"></label>
+<label class="f">حداقل زمان ماند <span class="u">s</span><input id="ht" type="number" step="1" value="15"></label>
+<label class="f">چگالی <span class="u">kg/m³</span><input id="hrho" type="number" value="1020"></label>
+<label class="f">ویسکوزیته در دمای پاستوریزاسیون <span class="u">mPa·s</span><input id="hmu" type="number" step="0.05" value="0.7"></label>
+</div>
+<div class="row"><button class="pri" id="runH">بررسی</button></div>
+<div id="msgH"></div><div id="outH"></div></section>
+</main>
+<footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+<script src="dairy.js"></script>
+
+</body></html>

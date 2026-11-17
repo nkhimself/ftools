@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>فرآیند حرارتی — F-value، Ball، MKT</title>
+<meta name="description" content="تحلیل لاگ دما، F-value، طراحی زمان فرآیند با روش Ball و دمای سینتیکی متوسط">
+<link rel="preload" href="vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">ابزارهای مهندسی غذا</a>
+<nav><a href="thermal.html" class="cur">فرآیند حرارتی</a><a href="formulation.html">فرمولاسیون</a><a href="fitting.html">برازش مدل</a><a href="dairy.html">لبنیات</a><a href="about.html">روش‌ها</a></nav></div></header>
+<main class="wrap">
+<h1>فرآیند حرارتی: از لاگ دما تا زمان فرآیند</h1>
+<p class="lead">سه مرحلهٔ به‌هم‌پیوسته: تحلیل لاگ دمای نقطهٔ سرد، طراحی زمان فرآیند با مدل Ball، و دمای سینتیکی متوسط برای انبار و حمل.</p>
+<div class="card"><div class="step"><b class="n">۰</b><h2>پارامترهای کشندگی</h2></div>
+<div class="grid">
+<label class="f">پیش‌تنظیم<select id="preset"><option value="121.1,10">F₀ — کنسرو کم‌اسید (۱۲۱٫۱ / ۱۰)</option><option value="70,7.5">پاستوریزاسیون Listeria (۷۰ / ۷٫۵)</option><option value="60,6.94">PU — آبجو/نوشیدنی (۶۰ / ۶٫۹۴)</option><option value="custom">دلخواه</option></select></label>
+<label class="f">T<sub>ref</sub> <span class="u">°C</span><input id="tref" type="number" step="0.1" value="121.1"></label>
+<label class="f">z <span class="u">°C</span><input id="z" type="number" step="0.1" value="10"></label>
+<label class="f">F هدف <span class="u">min</span><input id="ftarget" type="number" step="0.1" value="6"></label>
+</div>
+<div class="note warn">مقادیر پیش‌تنظیم نمونه‌اند؛ <b>z و F هدف را از منبع معتبر یا مرجع صلاحیت‌دار محصول خودتان تأیید کنید</b>. برای کنسرو تجاری کم‌اسید، اعتبارسنجی فرآیند با مرجع فرآیند (process authority) الزامی است.</div></div>
+
+<div class="tabs" id="tb" role="tablist"><button data-tab="a">۱. تحلیل لاگ دما</button><button data-tab="b">۲. طراحی زمان فرآیند</button><button data-tab="c">۳. دمای سینتیکی متوسط</button></div>
+
+<section data-pane="a" class="card">
+<div class="step"><b class="n">۱</b><h2>لاگ دمای نقطهٔ سرد (cold spot)</h2></div>
+<p class="lead">دو ستون: زمان (دقیقه) و دما (°C). جداکننده: فاصله، ویرگول، تب. اعداد فارسی هم قبول است. از فایل CSV هم می‌توانید بخوانید.</p>
+<textarea id="log" spellcheck="false"></textarea>
+<div class="row"><input type="file" id="logf" accept=".csv,.txt" style="max-width:260px"><button id="logex">نمونهٔ آماده</button></div>
+<div class="grid" style="margin-top:10px">
+<label class="f">دمای محیط گرمایش (retort) <span class="u">°C</span><input id="tr" type="number" step="0.1" value="121.1"></label>
+<label class="f">پایان گرمادهی <span class="u">min</span><input id="hend" type="number" step="0.5" value="45"></label>
+<label class="f">شروع برازش (حذف تأخیر اولیه) <span class="u">min</span><input id="tstart" type="number" step="0.5" value="6"></label>
+</div>
+<div class="row"><button class="pri" id="runA">محاسبه</button><button id="csvA">دانلود CSV</button><button onclick="window.print()">چاپ / PDF</button></div>
+<div id="msgA"></div><div id="outA"></div></section>
+
+<section data-pane="b" class="card" hidden>
+<div class="step"><b class="n">۲</b><h2>زمان گرمادهی لازم برای F هدف</h2></div>
+<p class="lead">با مدل نیم‌لگاریتمی Ball، تأثیر مرحلهٔ خنک‌سازی هم در F محاسبه می‌شود (کشندگی در خنک‌سازی صرف‌نظر نشده).</p>
+<div class="grid">
+<label class="f">f<sub>h</sub> <span class="u">min</span><input id="fh" type="number" step="0.1" value="22"></label>
+<label class="f">j<sub>h</sub><input id="jh" type="number" step="0.01" value="1.6"></label>
+<label class="f">T اولیه محصول <span class="u">°C</span><input id="ti" type="number" step="0.1" value="40"></label>
+<label class="f">T retort <span class="u">°C</span><input id="tr2" type="number" step="0.1" value="121.1"></label>
+<label class="f">f<sub>c</sub> <span class="u">min</span><input id="fc" type="number" step="0.1" value="22"></label>
+<label class="f">j<sub>c</sub><input id="jc" type="number" step="0.01" value="1.4"></label>
+<label class="f">T آب خنک‌کننده <span class="u">°C</span><input id="tw" type="number" step="0.1" value="25"></label>
+</div>
+<div class="row"><button id="fromA">گرفتن f<sub>h</sub> و j<sub>h</sub> از مرحلهٔ ۱</button><button class="pri" id="runB">محاسبهٔ زمان فرآیند</button><button id="csvB">دانلود CSV</button></div>
+<div id="msgB"></div><div id="outB"></div></section>
+
+<section data-pane="c" class="card" hidden>
+<div class="step"><b class="n">۳</b><h2>دمای سینتیکی متوسط (MKT)</h2></div>
+<p class="lead">لاگ دمای انبار یا حمل: یک ستون دما، یا دو ستون زمان (ساعت) و دما. MKT اثر نوسان دما را روی سرعت واکنش‌های تخریب به‌درستی وزن می‌دهد؛ میانگین ساده کمتر از آن است.</p>
+<textarea id="mlog" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">ΔH واکنش <span class="u">kJ/mol</span><input id="dh" type="number" step="1" value="83.144"></label>
+<label class="f">حد مجاز دما <span class="u">°C</span><input id="tlim" type="number" step="0.5" value="25"></label>
+</div>
+<div class="row"><button class="pri" id="runC">محاسبه</button><button id="mex">نمونهٔ آماده</button></div>
+<div id="msgC"></div><div id="outC"></div></section>
+</main>
+<footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+<script src="thermal.js"></script>
+
+</body></html>

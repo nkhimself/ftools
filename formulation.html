@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>فرمولاسیون با کمترین هزینه</title>
+<meta name="description" content="بهینه‌سازی خطی فرمولاسیون، قیمت سایه‌ای محدودیت‌ها و تشخیص ناسازگاری">
+<link rel="preload" href="vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">ابزارهای مهندسی غذا</a>
+<nav><a href="thermal.html">فرآیند حرارتی</a><a href="formulation.html" class="cur">فرمولاسیون</a><a href="fitting.html">برازش مدل</a><a href="dairy.html">لبنیات</a><a href="about.html">روش‌ها</a></nav></div></header>
+<main class="wrap">
+<h1>فرمولاسیون با کمترین هزینه</h1>
+<p class="lead">ترکیب مواد اولیه را طوری پیدا می‌کند که همهٔ محدودیت‌های ترکیب شیمیایی برقرار باشد و هزینه کمینه شود؛ بعد نشان می‌دهد کدام محدودیت بیشترین هزینه را به شما تحمیل می‌کند، و اگر جواب وجود نداشته باشد، کدام محدودیت‌ها مانع‌اند.</p>
+<div class="card"><div class="step"><b class="n">۱</b><h2>مواد اولیه</h2></div>
+<p class="lead">ترکیب‌ها به درصد (g/100g) در ستون‌ها وارد شود. سهم هر ماده در فرمول بر حسب درصد وزنی و مجموع ۱۰۰ است. هزینه به هر واحد دلخواه (مثلاً هزار تومان به ازای kg).</p>
+<div class="tw"><table class="edit" id="ing"></table></div>
+<div class="row"><button id="addIng">+ ماده</button><button id="addNut">+ ستون ترکیب</button><button id="exF">نمونهٔ آماده</button></div></div>
+
+<div class="card"><div class="step"><b class="n">۲</b><h2>محدودیت‌های محصول نهایی</h2></div>
+<p class="lead">حد پایین و بالای هر ترکیب در محصول نهایی (خالی = بدون محدودیت).</p>
+<div class="tw"><table class="edit" id="cons"></table></div></div>
+
+<div class="card"><div class="step"><b class="n">۳</b><h2>حل و تحلیل</h2></div>
+<div class="row" style="margin-top:0"><button class="pri" id="runF">محاسبهٔ فرمول بهینه</button><button id="csvF">دانلود CSV</button><button onclick="window.print()">چاپ / PDF</button></div>
+<div id="msgF"></div><div id="outF"></div></div>
+
+<div class="card" id="sens" hidden><div class="step"><b class="n">۴</b><h2>حساسیت به قیمت</h2></div>
+<p class="lead">اگر قیمت یک ماده تغییر کند، هزینه و سهم آن در فرمول چه می‌شود؟</p>
+<div class="grid"><label class="f">ماده<select id="sensIng"></select></label></div>
+<div id="outS"></div></div>
+</main>
+<footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+<script src="formulation.js"></script>
+
+</body></html>

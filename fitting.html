@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>برازش مدل — خشک‌کردن، ایزوترم، ماندگاری</title>
+<meta name="description" content="برازش مدل‌های خشک‌کردن، ایزوترم جذب رطوبت و ماندگاری شتاب‌یافته">
+<link rel="preload" href="vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">ابزارهای مهندسی غذا</a>
+<nav><a href="thermal.html">فرآیند حرارتی</a><a href="formulation.html">فرمولاسیون</a><a href="fitting.html" class="cur">برازش مدل</a><a href="dairy.html">لبنیات</a><a href="about.html">روش‌ها</a></nav></div></header>
+<main class="wrap">
+<h1>برازش مدل به داده‌های آزمایشگاهی</h1>
+<p class="lead">داده‌های خودتان را وارد کنید؛ ابزار چند مدل را برازش می‌دهد، آماره‌ها را کنار هم می‌گذارد و پارامترهایی که واقعاً لازم دارید (ضریب نفوذ، رطوبت تک‌لایه، انرژی فعال‌سازی، ماندگاری) را با بازهٔ اطمینان می‌دهد.</p>
+<div class="tabs" id="tb"><button data-tab="d">خشک‌کردن</button><button data-tab="s">ایزوترم جذب رطوبت</button><button data-tab="l">ماندگاری (Arrhenius)</button></div>
+
+<section data-pane="d" class="card">
+<div class="step"><b class="n">۱</b><h2>منحنی خشک‌شدن</h2></div>
+<p class="lead">دو ستون: زمان و مقدار. مقدار می‌تواند نسبت رطوبت (MR) باشد یا رطوبت (پایهٔ خشک) تا ابزار MR را حساب کند.</p>
+<textarea id="dd" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">نوع مقدار<select id="dtype"><option value="mr">نسبت رطوبت MR</option><option value="x">رطوبت X (db)</option></select></label>
+<label class="f">X اولیه (فقط برای نوع X)<input id="dx0" type="number" step="any" value="3.2"></label>
+<label class="f">X تعادلی<input id="dxe" type="number" step="any" value="0.05"></label>
+<label class="f">نصف ضخامت L <span class="u">mm</span> (برای D<sub>eff</sub>)<input id="dL" type="number" step="any" value="2"></label>
+</div>
+<div class="row"><input type="file" id="ddf" accept=".csv,.txt" style="max-width:260px"><button id="ddex">نمونهٔ آماده</button><button class="pri" id="runD">برازش همهٔ مدل‌ها</button><button id="csvD">دانلود CSV</button></div>
+<div id="msgD"></div><div id="outD"></div></section>
+
+<section data-pane="s" class="card" hidden>
+<div class="step"><b class="n">۱</b><h2>ایزوترم جذب رطوبت</h2></div>
+<p class="lead">دو ستون: فعالیت آبی a<sub>w</sub> (بین ۰ و ۱) و رطوبت تعادلی (g/g یا g/100g، هر دو یکسان باشند).</p>
+<textarea id="sd" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">رطوبت مجاز هدف (هم‌واحد با داده)<input id="sxt" type="number" step="any" value="0.1"></label>
+<label class="f">بازهٔ BET: a<sub>w</sub> از<input id="blo" type="number" step="0.01" value="0.05"></label>
+<label class="f">تا<input id="bhi" type="number" step="0.01" value="0.4"></label>
+</div>
+<div class="row"><input type="file" id="sdf" accept=".csv,.txt" style="max-width:260px"><button id="sdex">نمونهٔ آماده</button><button class="pri" id="runS">برازش</button><button id="csvS">دانلود CSV</button></div>
+<div id="msgS"></div><div id="outS"></div></section>
+
+<section data-pane="l" class="card" hidden>
+<div class="step"><b class="n">۱</b><h2>ماندگاری شتاب‌یافته</h2></div>
+<p class="lead">سه ستون: دما (°C)، زمان (روز یا هر واحد ثابت) و مقدار شاخص کیفی. حداقل ۳ دما، هر کدام حداقل ۳ زمان‌بندی.</p>
+<textarea id="ld" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">مرتبهٔ واکنش<select id="lord"><option value="0">صفر (خطی)</option><option value="1">یک (لگاریتمی)</option></select></label>
+<label class="f">حد رد کیفیت<input id="llim" type="number" step="any" value="10"></label>
+<label class="f">دمای انبار <span class="u">°C</span><input id="lts" type="number" step="any" value="25"></label>
+</div>
+<div class="row"><input type="file" id="ldf" accept=".csv,.txt" style="max-width:260px"><button id="ldex">نمونهٔ آماده</button><button class="pri" id="runL">محاسبه</button><button id="csvL">دانلود CSV</button></div>
+<div id="msgL"></div><div id="outL"></div></section>
+</main>
+<footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+<script src="fitting.js"></script>
+
+</body></html>
