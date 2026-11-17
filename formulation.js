@@ -32,7 +32,7 @@ $('#exF').addEventListener('click', function () { load(EX); });
 function build(skip, priceOverride) {
   var n = S.ing.length, c = [], A = [], rel = [], b = [], lab = [], k = 0;
   S.ing.forEach(function (r, i) { var cost = pf(r[1], 0); if (priceOverride && priceOverride.i === i) cost = priceOverride.v; c.push(cost / 100); });
-  var one = []; for (var i = 0; i < n; i++) one.push(1); A.push(one); rel.push('='); b.push(100); lab.push({ t: 'جمع = ۱۰۰٪', kind: 'sum' });
+  var one = []; for (var i = 0; i < n; i++) one.push(1); A.push(one); rel.push('='); b.push(100); lab.push({ t: 'جمع = 100٪', kind: 'sum' });
   function add(row, r, v, text, kind) { if (skip === k++) return; A.push(row); rel.push(r); b.push(v); lab.push({ t: text, kind: kind }); }
   S.ing.forEach(function (r, i) {
     var mn = pf(r[2], 0), mx = pf(r[3], 100), e = []; for (var q = 0; q < n; q++) e.push(q === i ? 1 : 0);
@@ -70,12 +70,12 @@ $('#runF').addEventListener('click', function () {
     var s = E.lpShadow(L.c, L.A, L.rel, L.b, i, r.obj); if (s == null || Math.abs(s) < 1e-7) continue; sh.push({ t: L.lab[i].t, s: s });
   }
   sh.sort(function (a, b) { return Math.abs(b.s) - Math.abs(a.s); });
-  var h = '<div class="stats">' + U.stat('هزینه هر kg محصول', U.num(cost, 3), '', 'good') + U.stat('هزینه هر ۱۰۰۰ kg', U.num(cost * 1000, 1), '') + U.stat('تعداد مادهٔ مصرفی', rows.length, '') + '</div>';
+  var h = '<div class="stats">' + U.stat('هزینه هر kg محصول', U.num(cost, 3), '', 'good') + U.stat('هزینه هر 1000 kg', U.num(cost * 1000, 1), '') + U.stat('تعداد مادهٔ مصرفی', rows.length, '') + '</div>';
   h += '<h3>فرمول بهینه</h3>' + U.table(['ماده', '٪ وزنی', 'هزینه (به ازای kg محصول)', 'سهم از هزینه', 'وضعیت'], rows);
   if (out.length) h += '<p class="lead">در فرمول نیامدند: ' + out.join('، ') + '</p>';
   h += '<h3>ترکیب محصول نهایی</h3>' + U.table(['ترکیب', 'مقدار', 'محدودیت'], nutRows);
   h += '<h3>کدام محدودیت بیشترین هزینه را ایجاد می‌کند؟</h3>';
-  h += sh.length ? U.table(['محدودیت فعال', 'تغییر هزینهٔ هر kg به ازای +۱ واحد در عدد حد'], sh.map(function (o) { return ['<span dir="rtl">' + U.esc(o.t) + '</span>', (o.s > 0 ? '+' : '') + U.num(o.s, 4)]; })) + '<p class="lead">مثبت: بالا بردن آن عدد، هزینه را زیاد می‌کند (معمولاً حداقل‌ها). منفی: بالا بردن آن عدد هزینه را کم می‌کند (معمولاً حداکثرها: شل‌کردن حد باعث صرفه‌جویی می‌شود). این اعداد فقط برای تغییر کوچک معتبرند؛ برای تغییر بزرگ دوباره حل کنید.</p>' : '<p class="lead">هیچ محدودیتی روی هزینه اثر نمی‌گذارد (جواب در درون ناحیه است).</p>';
+  h += sh.length ? U.table(['محدودیت فعال', 'تغییر هزینهٔ هر kg به ازای +1 واحد در عدد حد'], sh.map(function (o) { return ['<span dir="rtl">' + U.esc(o.t) + '</span>', (o.s > 0 ? '+' : '') + U.num(o.s, 4)]; })) + '<p class="lead">مثبت: بالا بردن آن عدد، هزینه را زیاد می‌کند (معمولاً حداقل‌ها). منفی: بالا بردن آن عدد هزینه را کم می‌کند (معمولاً حداکثرها: شل‌کردن حد باعث صرفه‌جویی می‌شود). این اعداد فقط برای تغییر کوچک معتبرند؛ برای تغییر بزرگ دوباره حل کنید.</p>' : '<p class="lead">هیچ محدودیتی روی هزینه اثر نمی‌گذارد (جواب در درون ناحیه است).</p>';
   $('#outF').innerHTML = h; U.msg('msgF', 'جواب بهینه پیدا شد. توجه: این مدل فقط ترکیب شیمیایی را کنترل می‌کند؛ فناوری فرآیند، قوام امولسیون، آلرژن و الزامات استاندارد را باید جدا بررسی کنید.', 'ok');
   lastRes = [['ingredient', 'percent', 'cost_per_kg_product']].concat(S.ing.map(function (row, i) { return [row[0], r.x[i].toFixed(4), (r.x[i] * L.c[i]).toFixed(4)]; })).concat([['TOTAL_COST_PER_KG', '', cost.toFixed(4)]]);
   $('#sens').hidden = false; $('#sensIng').innerHTML = S.ing.map(function (row, i) { return '<option value="' + i + '">' + U.esc(row[0]) + '</option>'; }).join(''); sens();

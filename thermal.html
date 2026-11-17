@@ -14,19 +14,19 @@
 <main class="wrap">
 <h1>فرآیند حرارتی: از لاگ دما تا زمان فرآیند</h1>
 <p class="lead">سه مرحلهٔ به‌هم‌پیوسته: تحلیل لاگ دمای نقطهٔ سرد، طراحی زمان فرآیند با مدل Ball، و دمای سینتیکی متوسط برای انبار و حمل.</p>
-<div class="card"><div class="step"><b class="n">۰</b><h2>پارامترهای کشندگی</h2></div>
+<div class="card"><div class="step"><b class="n">0</b><h2>پارامترهای کشندگی</h2></div>
 <div class="grid">
-<label class="f">پیش‌تنظیم<select id="preset"><option value="121.1,10">F₀ — کنسرو کم‌اسید (۱۲۱٫۱ / ۱۰)</option><option value="70,7.5">پاستوریزاسیون Listeria (۷۰ / ۷٫۵)</option><option value="60,6.94">PU — آبجو/نوشیدنی (۶۰ / ۶٫۹۴)</option><option value="custom">دلخواه</option></select></label>
+<label class="f">پیش‌تنظیم<select id="preset"><option value="121.1,10">F₀ — کنسرو کم‌اسید (121.1 / 10)</option><option value="70,7.5">پاستوریزاسیون Listeria (70 / 7.5)</option><option value="60,6.94">PU — آبجو/نوشیدنی (60 / 6.94)</option><option value="custom">دلخواه</option></select></label>
 <label class="f">T<sub>ref</sub> <span class="u">°C</span><input id="tref" type="number" step="0.1" value="121.1"></label>
 <label class="f">z <span class="u">°C</span><input id="z" type="number" step="0.1" value="10"></label>
 <label class="f">F هدف <span class="u">min</span><input id="ftarget" type="number" step="0.1" value="6"></label>
 </div>
 <div class="note warn">مقادیر پیش‌تنظیم نمونه‌اند؛ <b>z و F هدف را از منبع معتبر یا مرجع صلاحیت‌دار محصول خودتان تأیید کنید</b>. برای کنسرو تجاری کم‌اسید، اعتبارسنجی فرآیند با مرجع فرآیند (process authority) الزامی است.</div></div>
 
-<div class="tabs" id="tb" role="tablist"><button data-tab="a">۱. تحلیل لاگ دما</button><button data-tab="b">۲. طراحی زمان فرآیند</button><button data-tab="c">۳. دمای سینتیکی متوسط</button></div>
+<div class="tabs" id="tb" role="tablist"><button data-tab="a">1. تحلیل لاگ دما</button><button data-tab="b">2. طراحی زمان فرآیند</button><button data-tab="c">3. دمای سینتیکی متوسط</button></div>
 
 <section data-pane="a" class="card">
-<div class="step"><b class="n">۱</b><h2>لاگ دمای نقطهٔ سرد (cold spot)</h2></div>
+<div class="step"><b class="n">1</b><h2>لاگ دمای نقطهٔ سرد (cold spot)</h2></div>
 <p class="lead">دو ستون: زمان (دقیقه) و دما (°C). جداکننده: فاصله، ویرگول، تب. اعداد فارسی هم قبول است. از فایل CSV هم می‌توانید بخوانید.</p>
 <textarea id="log" spellcheck="false"></textarea>
 <div class="row"><input type="file" id="logf" accept=".csv,.txt" style="max-width:260px"><button id="logex">نمونهٔ آماده</button></div>
@@ -39,7 +39,7 @@
 <div id="msgA"></div><div id="outA"></div></section>
 
 <section data-pane="b" class="card" hidden>
-<div class="step"><b class="n">۲</b><h2>زمان گرمادهی لازم برای F هدف</h2></div>
+<div class="step"><b class="n">2</b><h2>زمان گرمادهی لازم برای F هدف</h2></div>
 <p class="lead">با مدل نیم‌لگاریتمی Ball، تأثیر مرحلهٔ خنک‌سازی هم در F محاسبه می‌شود (کشندگی در خنک‌سازی صرف‌نظر نشده).</p>
 <div class="grid">
 <label class="f">f<sub>h</sub> <span class="u">min</span><input id="fh" type="number" step="0.1" value="22"></label>
@@ -50,11 +50,11 @@
 <label class="f">j<sub>c</sub><input id="jc" type="number" step="0.01" value="1.4"></label>
 <label class="f">T آب خنک‌کننده <span class="u">°C</span><input id="tw" type="number" step="0.1" value="25"></label>
 </div>
-<div class="row"><button id="fromA">گرفتن f<sub>h</sub> و j<sub>h</sub> از مرحلهٔ ۱</button><button class="pri" id="runB">محاسبهٔ زمان فرآیند</button><button id="csvB">دانلود CSV</button></div>
+<div class="row"><button id="fromA">گرفتن f<sub>h</sub> و j<sub>h</sub> از مرحلهٔ 1</button><button class="pri" id="runB">محاسبهٔ زمان فرآیند</button><button id="csvB">دانلود CSV</button></div>
 <div id="msgB"></div><div id="outB"></div></section>
 
 <section data-pane="c" class="card" hidden>
-<div class="step"><b class="n">۳</b><h2>دمای سینتیکی متوسط (MKT)</h2></div>
+<div class="step"><b class="n">3</b><h2>دمای سینتیکی متوسط (MKT)</h2></div>
 <p class="lead">لاگ دمای انبار یا حمل: یک ستون دما، یا دو ستون زمان (ساعت) و دما. MKT اثر نوسان دما را روی سرعت واکنش‌های تخریب به‌درستی وزن می‌دهد؛ میانگین ساده کمتر از آن است.</p>
 <textarea id="mlog" spellcheck="false"></textarea>
 <div class="grid" style="margin-top:10px">
@@ -63,6 +63,7 @@
 </div>
 <div class="row"><button class="pri" id="runC">محاسبه</button><button id="mex">نمونهٔ آماده</button></div>
 <div id="msgC"></div><div id="outC"></div></section>
+<section class="card guide"><h2>راهنما: فرمول‌ها و ورودی‌ها</h2><p class="lead">هر بخش را باز کنید. ترتیب خواندن: ابتدا F-value، بعد Ball، بعد MKT.</p><details class="g"><summary>F-value: «چند دقیقه معادل در دمای مرجع»</summary><h4>این چه کاری می‌کند؟</h4><p>اثر کشندگی کل لاگ دما را به یک عدد تبدیل می‌کند: چند دقیقه گرمادهی در دمای مرجع (121.1°C برای کنسرو کم‌اسید) همان قدر باکتری می‌کشد. باکتری‌ها با بالا رفتن دما خیلی سریع‌تر می‌میرند، پس هر دقیقه در دمای بالاتر «ارزش» بیشتری دارد.</p><h4>فرمول</h4><div class="eq">F = Σ 10<sup>(T − T<sub>ref</sub>)/z</sup> · Δt</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">T</b> — دمای نقطهٔ سرد محصول در هر لحظه (°C)</li><li><b dir="ltr">T_ref</b> — دمای مرجع (°C)؛ برای کنسرو کم‌اسید 121.1</li><li><b dir="ltr">z</b> — چند درجه دما لازم است تا سرعت مرگ باکتری 10 برابر شود (°C)؛ برای اسپور کلستریدیوم بوتولینوم معمولاً 10</li><li><b dir="ltr">Δt</b> — فاصلهٔ زمانی بین دو ثبت دما (دقیقه)</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>برای هر دقیقه ضریب L = 10^((T − 121.1)/10) را حساب کنید و همه را جمع کنید. یعنی 1 دقیقه در 121.1 = 1 دقیقه F؛ 1 دقیقه در 131.1 = 10 دقیقه؛ 1 دقیقه در 111.1 = 0.1 دقیقه.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">لاگ دما</td><td class="t" style="white-space:normal">دیتالاگر یا ترموکوپل که داخل کندترین نقطهٔ گرم‌شدن محصول (مرکز قوطی یا مرکز بزرگ‌ترین قطعه) قرار می‌گیرد؛ آزمون «نفوذ حرارت» (heat penetration). دمای محفظهٔ retort کافی نیست.</td></tr><tr><td class="t">T_ref و z</td><td class="t" style="white-space:normal">از استاندارد محصول، منبع علمی یا مرجع فرآیند (process authority). برای کنسرو کم‌اسید 121.1 و 10؛ برای میکروب هدف دیگر مقادیر دیگری دارد.</td></tr><tr><td class="t">F هدف</td><td class="t" style="white-space:normal">از مرجع فرآیند / HACCP / استاندارد. مقدار «6» در ابزار فقط نمونه است.</td></tr></tbody></table></div><h4>مثال عددی</h4><p>محصولی 40 دقیقه گرم می‌شود و مرکز قوطی 10 دقیقه آخر 120°C است: L = 10^((120−121.1)/10) = 0.78 ؛ ده دقیقه ⇒ F ≈ 7.8 دقیقه. اگر F هدف 6 باشد، کافی است.</p><div class="note warn">F فقط وقتی معتبر است که ترموکوپل در نقطهٔ سرد باشد. اعتبارسنجی نهایی کنسرو تجاری با مرجع فرآیند است.</div></details><details class="g"><summary>روش Ball: f<sub>h</sub> و j<sub>h</sub> و زمان فرآیند</summary><h4>این چه کاری می‌کند؟</h4><p>سرعت گرم‌شدن مرکز قوطی را با دو عدد توصیف می‌کند تا بتوانید بدون آزمون جدید، زمان لازم برای F هدف را پیدا کنید. در نمودار نیم‌لگاریتمی (T<sub>r</sub> − T) برحسب زمان، گرم‌شدن تقریباً خط راست است.</p><h4>فرمول</h4><div class="eq">T = T<sub>r</sub> − j<sub>h</sub>·(T<sub>r</sub> − T<sub>i</sub>)·10<sup>−t/f<sub>h</sub></sup></div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">T_r</b> — دمای retort (°C)</li><li><b dir="ltr">T_i</b> — دمای اولیهٔ محصول (°C)</li><li><b dir="ltr">f_h</b> — زمانی (دقیقه) که فاصلهٔ دمای مرکز تا retort ده برابر کم می‌شود؛ هرچه بزرگ‌تر یعنی کندتر گرم می‌شود</li><li><b dir="ltr">j_h</b> — ضریب تأخیر: خط راست را به عقب ادامه می‌دهیم و می‌بینیم در t=0 کجا می‌رسد؛ حدود 1 تا 2 برای قوطی‌های معمولی</li><li><b dir="ltr">f_c, j_c, T_w</b> — همان‌ها برای خنک‌شدن، و دمای آب خنک‌کننده</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>یک لاگ گرمایش بگیرید. ابزار خط راست را روی بخش پایانی برازش می‌دهد (شروع برازش را بعد از تأخیر اولیه بگذارید) و f<sub>h</sub> و j<sub>h</sub> را می‌دهد. سپس در مرحلهٔ 2 زمان گرمادهی را تغییر می‌دهد تا F کل (شامل خنک‌سازی) به هدف برسد.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">f_h, j_h</td><td class="t" style="white-space:normal">از مرحلهٔ 1 همین ابزار (دکمهٔ «گرفتن...») یا از گزارش آزمون نفوذ حرارت</td></tr><tr><td class="t">T_i</td><td class="t" style="white-space:normal">اولین عدد لاگ (دمای محصول هنگام ورود)</td></tr><tr><td class="t">T_r</td><td class="t" style="white-space:normal">نمودار یا ثبات retort</td></tr><tr><td class="t">f_c, j_c</td><td class="t" style="white-space:normal">از لاگ خنک‌سازی همان قوطی؛ اگر ندارید ابتدا مقدار f_h را بگذارید و فقط برآورد خشن بگیرید</td></tr><tr><td class="t">T_w</td><td class="t" style="white-space:normal">دماسنج آب خنک‌کننده</td></tr></tbody></table></div><h4>مثال عددی</h4><p>محصولی با f<sub>h</sub>=22، j<sub>h</sub>=1.6، T<sub>i</sub>=40، retort 121.1: برای F هدف 6 حدود 37 دقیقه گرمادهی لازم است (ابزار 36.8 می‌دهد)، و حدود 2 دقیقه F از خنک‌سازی می‌آید.</p><div class="note warn">فرض: retort بلافاصله به دمای هدف می‌رسد (زمان رسیدن به دما لحاظ نشده) و گرمایش با یک خط راست توصیف می‌شود. پس برای طراحی واقعی حتماً آزمون با لاگ واقعی بگیرید.</div></details><details class="g"><summary>MKT: دمای سینتیکی متوسط</summary><h4>این چه کاری می‌کند؟</h4><p>اگر دمای انبار یا کامیون بالا و پایین می‌شود، میانگین ساده درست نیست چون ساعت‌های گرم، فساد را خیلی بیشتر از ساعت‌های سرد جبران می‌کنند. MKT یک دمای ثابت است که همان قدر فساد ایجاد می‌کند.</p><h4>فرمول</h4><div class="eq">MKT = (ΔH/R) / ( −ln( Σ exp(−ΔH/(R·T<sub>k</sub>)) / n ) ) − 273.15</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">ΔH</b> — انرژی فعال‌سازی واکنش فساد (kJ/mol)؛ پیش‌فرض 83.14 که در صنعت دارو رایج است</li><li><b dir="ltr">R</b> — ثابت گازها، 8.314 J/mol·K</li><li><b dir="ltr">T_k</b> — دمای هر ثبت بر حسب کلوین (°C + 273.15)</li><li><b dir="ltr">n</b> — تعداد ثبت‌ها</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>لاگ را وارد کنید؛ ابزار MKT را می‌دهد. اگر MKT از حد دمای نگهداری بیشتر است، اثر انبار روی ماندگاری مثل دمای ثابت MKT است.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">لاگ دما</td><td class="t" style="white-space:normal">دیتالاگر دما در انبار یا کامیون، هر 10–60 دقیقه یک ثبت</td></tr><tr><td class="t">ΔH</td><td class="t" style="white-space:normal">اگر اثر دما روی فساد محصول‌تان را نمی‌دانید، پیش‌فرض را نگه دارید؛ یا از بخش «ماندگاری» در صفحهٔ برازش مدل محاسبه کنید (E_a)</td></tr><tr><td class="t">حد دما</td><td class="t" style="white-space:normal">دمای نگهداری روی برچسب محصول</td></tr></tbody></table></div><h4>مثال عددی</h4><p>دو ثبت 10 و 30 درجه: میانگین ساده 20 است ولی MKT حدود 24.6°C است، یعنی اثر واقعی گرم‌تر از میانگین است.</p></details></section>
 </main>
 <footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
 <script src="engine.js"></script>

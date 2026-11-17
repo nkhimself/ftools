@@ -16,7 +16,7 @@ $('#log').value = example(); $('#logex').addEventListener('click', function () {
 // ---- step 1
 $('#runA').addEventListener('click', function () {
   var P = params(), d = E.parseTable($('#log').value).filter(function (r) { return r.length >= 2; });
-  if (d.length < 5) return U.msg('msgA', 'حداقل ۵ ردیف «زمان دما» لازم است.', 'bad');
+  if (d.length < 5) return U.msg('msgA', 'حداقل 5 ردیف «زمان دما» لازم است.', 'bad');
   d.sort(function (a, b) { return a[0] - b[0]; });
   var t = d.map(function (r) { return r[0]; }), T = d.map(function (r) { return r[1]; });
   if (!(P.z > 0)) return U.msg('msgA', 'z باید مثبت باشد.', 'bad');
@@ -44,7 +44,7 @@ $('#csvA').addEventListener('click', function () { if (last.A) U.download('therm
 
 // ---- step 2
 $('#fromA').addEventListener('click', function () {
-  if (!last.fit) return U.msg('msgB', 'ابتدا مرحلهٔ ۱ را اجرا کنید.', 'warn');
+  if (!last.fit) return U.msg('msgB', 'ابتدا مرحلهٔ 1 را اجرا کنید.', 'warn');
   $('#fh').value = +last.fit.fh.toFixed(2); $('#jh').value = +last.fit.jh.toFixed(3); $('#ti').value = +last.fit.Ti.toFixed(1); $('#tr2').value = U.read('tr'); U.msg('msgB', 'مقادیر از لاگ منتقل شد. f<sub>c</sub> و j<sub>c</sub> را از لاگ خنک‌سازی خودتان وارد کنید.', 'ok');
 });
 $('#runB').addEventListener('click', function () {
@@ -70,7 +70,7 @@ $('#csvB').addEventListener('click', function () { if (last.B) U.download('therm
 function mex() { var l = [], i; for (i = 0; i < 168; i += 4) { var T = 20 + 5 * Math.sin(i / 24 * 2 * Math.PI) + (i > 90 && i < 110 ? 12 : 0); l.push(i + ' ' + T.toFixed(1)); } return l.join('\n'); }
 $('#mlog').value = mex(); $('#mex').addEventListener('click', function () { $('#mlog').value = mex(); });
 $('#runC').addEventListener('click', function () {
-  var d = E.parseTable($('#mlog').value); if (d.length < 3) return U.msg('msgC', 'حداقل ۳ ردیف لازم است.', 'bad');
+  var d = E.parseTable($('#mlog').value); if (d.length < 3) return U.msg('msgC', 'حداقل 3 ردیف لازم است.', 'bad');
   var two = d.every(function (r) { return r.length >= 2; }), t = two ? d.map(function (r) { return r[0]; }) : null, T = d.map(function (r) { return r[r.length - 1]; }), dH = U.read('dh'), lim = U.read('tlim');
   var mkt = E.mkt(T, dH, t), mean = 0, i; T.forEach(function (v) { mean += v; }); mean /= T.length;
   var over = 0, tot = 0; if (t) { for (i = 1; i < t.length; i++) { tot += t[i] - t[i - 1]; if ((T[i] + T[i - 1]) / 2 > lim) over += t[i] - t[i - 1]; } }

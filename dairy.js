@@ -63,8 +63,8 @@ $('#optC').addEventListener('click', function () {
   S.forEach(function (r, i) { cost += pf(r[1], 0) * x[i]; if (tot > 0) curCost += pf(r[1], 0) * R0[i].x; });
   var rows = S.map(function (r, i) { return { cells: ['<span dir="rtl">' + U.esc(r[0]) + '</span>', U.num(x[i], 2), U.num(pf(r[1], 0) * x[i] / fin.Mf, 2)] }; }).filter(function (r, i) { return x[i] > 1e-6; });
   var cpk = cost / fin.Mf, cur = tot > 0 ? curCost / curB.Mf : null, cs = checkCol(fin, sp);
-  var h = '<div class="stats">' + U.stat('هزینهٔ هر kg محصول', U.num(cpk, 2), '', 'good') + (cur != null ? U.stat('دستور فعلی', U.num(cur, 2), '') + U.stat('صرفه‌جویی', U.num((1 - cpk / cur) * 100, 1), '%') : '') + U.stat('رطوبت نهایی', cs[0], '%') + U.stat('چربی', cs[1], '%') + U.stat('پروتئین', cs[2], '%') + U.stat('بخار', U.num(fin.steam, 2), 'kg / ۱۰۰ kg دستور') + '</div>';
-  h += '<h3>دستور بهینه (برای ۱۰۰ kg مخلوط پیش از پخت)</h3>' + U.table(['ماده', 'kg', 'هزینه به ازای kg محصول'], rows);
+  var h = '<div class="stats">' + U.stat('هزینهٔ هر kg محصول', U.num(cpk, 2), '', 'good') + (cur != null ? U.stat('دستور فعلی', U.num(cur, 2), '') + U.stat('صرفه‌جویی', U.num((1 - cpk / cur) * 100, 1), '%') : '') + U.stat('رطوبت نهایی', cs[0], '%') + U.stat('چربی', cs[1], '%') + U.stat('پروتئین', cs[2], '%') + U.stat('بخار', U.num(fin.steam, 2), 'kg / 100 kg دستور') + '</div>';
+  h += '<h3>دستور بهینه (برای 100 kg مخلوط پیش از پخت)</h3>' + U.table(['ماده', 'kg', 'هزینه به ازای kg محصول'], rows);
   $('#outC').innerHTML = h; U.msg('msgC', 'دستور بر اساس روش گرمایش «' + (o.mode === 'direct' ? 'مستقیم' : 'غیرمستقیم') + '» حل شد. قبل از استفاده، pH، بافت و ذوب‌شوندگی را با آزمایش پخت کوچک تأیید کنید؛ مدل فقط ترکیب و انرژی را کنترل می‌کند.', 'ok');
   last.C = [['ingredient', 'kg_per_100kg_batch']].concat(S.map(function (r, i) { return [r[0], x[i].toFixed(3)]; })).concat([['cost_per_kg_product', cpk.toFixed(3)]]);
 });
@@ -94,13 +94,13 @@ function exY() { var m = E.phModel(4.2), l = [], t, s = 0; for (t = 0; t <= 150;
 $('#yd').value = exY(); $('#yex').addEventListener('click', function () { $('#yd').value = exY(); });
 $('#runY').addEventListener('click', function () {
   var d = E.parseTable($('#yd').value).filter(function (r) { return r.length >= 2; }), tg = U.read('yt'), pf0 = U.read('yf'), iv = U.read('yi');
-  if (d.length < 5) return U.msg('msgY', 'حداقل ۵ نقطه (زمان، pH) لازم است.', 'bad');
+  if (d.length < 5) return U.msg('msgY', 'حداقل 5 نقطه (زمان، pH) لازم است.', 'bad');
   d.sort(function (a, b) { return a[0] - b[0]; }); var t = d.map(function (r) { return r[0]; }), y = d.map(function (r) { return r[1]; });
   if (!(tg > pf0)) return U.msg('msgY', 'pH هدف باید بالاتر از pH کف باشد.', 'bad');
   if (y[y.length - 1] <= tg) return U.msg('msgY', 'آخرین pH به هدف رسیده است؛ پایان تخمیر را همان‌جا بگیرید.', 'warn');
   var f = E.fitPH(t, y, pf0, tg), warns = [], last_t = t[t.length - 1];
   if (f.tEnd == null || !isFinite(f.tEnd)) return U.msg('msgY', 'پیش‌بینی ممکن نشد؛ داده‌ها را بررسی کنید یا pH کف را کاهش دهید.', 'bad');
-  if (y[0] - y[y.length - 1] < 0.4) warns.push('افت pH هنوز کم است (کمتر از ۰٫۴)؛ پیش‌بینی خیلی نامطمئن است. چند نمونهٔ دیگر بگیرید.');
+  if (y[0] - y[y.length - 1] < 0.4) warns.push('افت pH هنوز کم است (کمتر از 0.4)؛ پیش‌بینی خیلی نامطمئن است. چند نمونهٔ دیگر بگیرید.');
   if (f.tEnd > last_t * 3) warns.push('پایان تخمیر بسیار دورتر از آخرین نمونه است؛ این برون‌یابی دور است.');
   var mdl = f.model, p = f.fit.p, tm = [], k;
   var tmax = Math.max(f.tEnd * 1.15, last_t); for (k = 0; k <= 150; k++) tm.push(tmax * k / 150);
@@ -125,6 +125,6 @@ $('#runH').addEventListener('click', function () {
   for (var k in o) if (!(o[k] > 0)) return U.msg('msgH', 'همهٔ مقادیر باید مثبت باشند.', 'bad');
   var r = E.holdingTube(o), regime = { laminar: 'آرام', transition: 'گذار', turbulent: 'آشفته' }[r.regime];
   var h = '<div class="stats">' + U.stat('زمان ماند سریع‌ترین ذره', U.num(r.tmin, 1), 's', r.ok ? 'good' : 'bad') + U.stat('زمان ماند میانگین', U.num(r.tmean, 1), 's') + U.stat('سرعت میانگین', U.num(r.u, 2), 'm/s') + U.stat('Re', U.num(r.Re, 0), regime) + U.stat('حداکثر دبی مجاز', U.num(r.Qmax, 0), 'L/h') + U.stat('طول لازم در این دبی', U.num(r.Lneeded, 1), 'm') + '</div>';
-  $('#outH').innerHTML = h; U.msg('msgH', (r.ok ? 'زمان ماند کافی است.' : '<b>زمان ماند ناکافی است</b>: دبی را کم کنید یا لوله را بلندتر کنید.') + ' توجه: ضریب سریع‌ترین ذره (۲ برای آرام، حدود ۱٫۲ برای آشفته) تقریبی است؛ برای تأیید قانونی از آزمون ردیابی (نمک یا رسانایی) روی خط واقعی استفاده کنید، و ضریب و حداقل زمان را از استاندارد خود بگیرید.', r.ok ? 'ok' : 'bad');
+  $('#outH').innerHTML = h; U.msg('msgH', (r.ok ? 'زمان ماند کافی است.' : '<b>زمان ماند ناکافی است</b>: دبی را کم کنید یا لوله را بلندتر کنید.') + ' توجه: ضریب سریع‌ترین ذره (2 برای آرام، حدود 1.2 برای آشفته) تقریبی است؛ برای تأیید قانونی از آزمون ردیابی (نمک یا رسانایی) روی خط واقعی استفاده کنید، و ضریب و حداقل زمان را از استاندارد خود بگیرید.', r.ok ? 'ok' : 'bad');
 });
 })();
