@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نوشیدنی و آب — نوشابه، آبمیوه، آب بسته‌بندی</title>
+<meta name="description" content="ابزارهای محاسباتی نوشیدنی: بریکس و شربت، آبمیوه، کربناسیون، آب و RO، pH و نگهدارنده، پاستوریزاسیون، پر کردن و خلأ، اسمولالیته">
+<link rel="preload" href="vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">ابزارهای مهندسی غذا</a>
+<nav><a href="thermal.html">فرآیند حرارتی</a><a href="formulation.html">فرمولاسیون</a><a href="fitting.html">برازش مدل</a><a href="dairy.html">لبنیات</a><a href="bakery.html">شیرینی و نان</a><a href="beverage.html" class="cur">نوشیدنی و آب</a><a href="about.html">روش‌ها</a></nav></div></header>
+<main class="wrap">
+<h1>صنایع نوشیدنی و آب</h1>
+<p class="lead">هشت ابزار برای نوشابه، آب بسته‌بندی، آبمیوه (طبیعی، از کنسانتره، مخلوط) و نوشیدنی‌های ورزشی و انرژی‌زا: بالانس بریکس و چگالی، کربناسیون، ترکیب یونی آب و RO، pH چندپروتونی، پاستوریزاسیون، انبساط حرارتی و خلأ بطری، و اسمولالیته. اعداد پیش‌فرض نمونه‌اند.</p>
+<div class="tabs" id="tb"><button data-tab="s">شربت و بریکس</button><button data-tab="j">آبمیوه</button><button data-tab="c">کربناسیون</button><button data-tab="w">آب و RO</button><button data-tab="p">pH و نگهدارنده</button><button data-tab="u">پاستوریزاسیون</button><button data-tab="f">پر کردن و خلأ</button><button data-tab="o">اسمولالیته</button></div>
+
+<section data-pane="s" class="card">
+<div class="step"><b class="n">1</b><h2>شربت، بریکس و اصلاح مخزن</h2></div>
+<p class="lead">با بالانس جرم و چگالی واقعی محلول قند (نه جمع حجم‌ها) مقدار شربت و آب هر بچ، نسبت اختلاط (throw)، اصلاح مخزن خارج از بریکس، و معادل شیرین‌کننده‌های مصنوعی را می‌دهد.</p>
+<h3>بچ از شربت غلیظ</h3>
+<div class="grid">
+<label class="f">حجم نوشیدنی نهایی در 20°C <span class="u">L</span><input id="sV" type="number" step="100" value="10000"></label>
+<label class="f">بریکس هدف نوشیدنی<input id="sBt" type="number" step="0.1" value="10.5"></label>
+<label class="f">بریکس شربت غلیظ<input id="sBs" type="number" step="0.5" value="65"></label>
+<label class="f">قیمت شربت <span class="u">/kg</span><input id="sPr" type="number" step="1" value="40"></label>
+</div>
+<h3>اصلاح مخزن خارج از بریکس</h3>
+<div class="grid">
+<label class="f">مقدار مخزن <span class="u">kg</span><input id="cM" type="number" step="100" value="10000"></label>
+<label class="f">بریکس فعلی (اندازه‌گیری)<input id="cB" type="number" step="0.05" value="11.2"></label>
+</div>
+<h3>شیرین‌کننده‌های غیرقندی <small class="lead">(اختیاری)</small></h3>
+<div class="tw"><table class="edit" id="sweT"></table></div>
+<div class="grid"><label class="f">شیرینی هدف معادل ساکارز <span class="u">g/L</span><input id="sEq" type="number" step="1" value="100"></label></div>
+<div class="note warn">قدرت شیرین‌کنندگی هر ماده در غلظت‌های مختلف و در حضور اسید تغییر می‌کند (تقریبی). حد مجاز مصرف هر ماده را از مقررات خودتان بگیرید و پس از محاسبه با چشایی تنظیم کنید.</div>
+<div class="row"><button class="pri" id="runS">محاسبه</button><button id="csvS">دانلود CSV</button></div>
+<div id="msgS"></div><div id="outS"></div></section>
+
+<section data-pane="j" class="card" hidden>
+<div class="step"><b class="n">2</b><h2>آبمیوه: بازسازی، ترکیب و تغلیظ</h2></div>
+<p class="lead">سه حالت: (الف) بازسازی از کنسانتره تا بریکس تک‌قوت و مقایسهٔ هزینه با NFC، (ب) ترکیب چند آبمیوه با بریکس و اسیدیته و نسبت بریکس/اسید، (ج) تبخیرکنندهٔ چندمرحله‌ای: آب تبخیری و بخار.</p>
+<h3>الف) بازسازی از کنسانتره</h3>
+<div class="grid">
+<label class="f">بریکس کنسانتره<input id="jBc" type="number" step="0.5" value="65"></label>
+<label class="f">بریکس هدف تک‌قوت (طبق استاندارد محصول)<input id="jBt" type="number" step="0.1" value="11.2"></label>
+<label class="f">حجم نهایی <span class="u">L</span><input id="jV" type="number" step="100" value="10000"></label>
+<label class="f">قیمت کنسانتره <span class="u">/kg</span><input id="jPc" type="number" step="1" value="120"></label>
+<label class="f">هزینهٔ بازسازی و فرآیند <span class="u">/L</span><input id="jPr" type="number" step="0.5" value="3"></label>
+<label class="f">قیمت NFC <span class="u">/L</span><input id="jPn" type="number" step="1" value="25"></label>
+</div>
+<div class="row"><button class="pri" id="runJ">محاسبه بازسازی</button></div>
+<div id="msgJ"></div><div id="outJ"></div>
+<h3>ب) ترکیب آبمیوه‌ها</h3>
+<div class="tw"><table class="edit" id="jT"></table></div>
+<div class="row"><button id="addJ">+ جزء</button><button id="exJ">نمونهٔ آماده</button><button class="pri" id="runJB">محاسبه ترکیب</button></div>
+<div id="msgJB"></div><div id="outJB"></div>
+<h3>ج) تبخیرکنندهٔ چندمرحله‌ای</h3>
+<div class="grid">
+<label class="f">خوراک <span class="u">kg/h</span><input id="eF" type="number" step="100" value="10000"></label>
+<label class="f">بریکس خوراک<input id="eBf" type="number" step="0.5" value="11.5"></label>
+<label class="f">بریکس کنسانتره<input id="eBc" type="number" step="0.5" value="65"></label>
+<label class="f">تعداد اثر (effect)<input id="eN" type="number" step="1" value="4"></label>
+<label class="f">اقتصاد بخار به ازای هر اثر <span class="u">kg آب / kg بخار</span><input id="eEc" type="number" step="0.05" value="0.85"></label>
+<label class="f">قیمت بخار <span class="u">/ton</span><input id="eSt" type="number" step="1" value="800"></label>
+</div>
+<div class="row"><button class="pri" id="runE">محاسبه تبخیر</button></div>
+<div id="msgE"></div><div id="outE"></div></section>
+
+<section data-pane="c" class="card" hidden>
+<div class="step"><b class="n">3</b><h2>کربناسیون: حجم CO₂، فشار و دما</h2></div>
+<p class="lead">رابطهٔ حجم گاز، دما و فشار را دوطرفه حل می‌کند، فشار بطری در دماهای انبار را می‌دهد و مصرف CO₂ را حساب می‌کند. همبستگی استفاده‌شده برای آب و آبجو است؛ در نوشابهٔ شیرین کمی تفاوت دارد و باید با دستگاه سنجش (Zahm-Nagel) اصلاح شود.</p>
+<div class="grid">
+<label class="f">دمای محصول در کربناتور <span class="u">°C</span><input id="cT" type="number" step="0.5" value="4"></label>
+<label class="f">حجم CO₂ هدف <span class="u">volumes</span><input id="cV" type="number" step="0.1" value="3.2"></label>
+<label class="f">فشار فعلی کربناتور (گیج) <span class="u">bar</span><input id="cP" type="number" step="0.1" value=""></label>
+<label class="f">حجم تولید <span class="u">L/day</span><input id="cL" type="number" step="1000" value="50000"></label>
+<label class="f">اتلاف CO₂ (کف و خط) <span class="u">%</span><input id="cLoss" type="number" step="1" value="15"></label>
+<label class="f">قیمت CO₂ <span class="u">/kg</span><input id="cPr" type="number" step="1" value="30"></label>
+</div>
+<div class="row"><button class="pri" id="runC">محاسبه</button><button id="csvC">دانلود CSV</button></div>
+<div id="msgC"></div><div id="outC"></div></section>
+
+<section data-pane="w" class="card" hidden>
+<div class="step"><b class="n">4</b><h2>آب: یون‌ها، پایداری، RO و ترکیب معدنی</h2></div>
+<p class="lead">از آنالیز آب: تعادل یونی (صحت آنالیز)، سختی، قلیائیت، شاخص لانژیه، بالانس RO با شاخص رسوب پساب، و دستور <b>کم‌هزینه‌ترین نمک‌ها</b> برای برگرداندن ترکیب معدنی به آب RO (با برنامه‌ریزی خطی).</p>
+<h3>آنالیز آب خام <small class="lead">(mg/L)</small></h3>
+<div class="grid">
+<label class="f">Ca²⁺<input id="wCa" type="number" step="1" value="80"></label>
+<label class="f">Mg²⁺<input id="wMg" type="number" step="1" value="20"></label>
+<label class="f">Na⁺<input id="wNa" type="number" step="1" value="45"></label>
+<label class="f">K⁺<input id="wK" type="number" step="0.5" value="3"></label>
+<label class="f">HCO₃⁻<input id="wHC" type="number" step="1" value="250"></label>
+<label class="f">SO₄²⁻<input id="wSO" type="number" step="1" value="85"></label>
+<label class="f">Cl⁻<input id="wCl" type="number" step="1" value="70"></label>
+<label class="f">NO₃⁻<input id="wNO" type="number" step="1" value="10"></label>
+<label class="f">pH<input id="wPH" type="number" step="0.05" value="7.6"></label>
+<label class="f">دما <span class="u">°C</span><input id="wT" type="number" step="1" value="20"></label>
+</div>
+<h3>RO</h3>
+<div class="grid">
+<label class="f">دبی خوراک <span class="u">m³/h</span><input id="rQ" type="number" step="1" value="20"></label>
+<label class="f">بازیابی (recovery) <span class="u">%</span><input id="rY" type="number" step="1" value="75"></label>
+<label class="f">دفع نمک (rejection) <span class="u">%</span><input id="rR" type="number" step="0.5" value="98"></label>
+<label class="f">pH پساب (برای لانژیه)<input id="rPH" type="number" step="0.05" value=""></label>
+</div>
+<div class="row"><button class="pri" id="runW">تحلیل آب و RO</button><button id="csvW">دانلود CSV</button></div>
+<div id="msgW"></div><div id="outW"></div>
+<h3>ترکیب معدنی کم‌هزینه برای آب RO</h3>
+<p class="lead">یون‌های آب RO پایه و بازهٔ هدف هر یون را بدهید؛ ابزار مقدار هر نمک را برای کمترین هزینه می‌دهد. بازه‌های نمونه فقط مثال‌اند.</p>
+<div class="tw"><table class="edit" id="mrT"></table></div>
+<div class="tw"><table class="edit" id="saT"></table></div>
+<div class="grid"><label class="f">pH آب نهایی (برای لانژیه)<input id="mpH" type="number" step="0.05" value="7.4"></label></div>
+<div class="row"><button id="usePerm">یون‌های پرمیت RO بالا را به‌عنوان پایه بگذار</button><button class="pri" id="runMR">محاسبه دستور نمک</button></div>
+<div id="msgMR"></div><div id="outMR"></div></section>
+
+<section data-pane="p" class="card" hidden>
+<div class="step"><b class="n">5</b><h2>pH، اسیدیته و نگهدارنده</h2></div>
+<p class="lead">pH واقعی مخلوط اسیدها و نمک‌ها را با موازنهٔ بار الکتریکی حل می‌کند (نه فقط «اسید اضافه می‌کنیم»)، اسیدیتهٔ قابل تیتراسیون، میزان فعال (غیریونیزه) بنزوات و سوربات، pH بیشینهٔ مجاز برای اثر نگهدارنده، و اصلاح pH.</p>
+<div class="tw"><table class="edit" id="pT"></table></div>
+<div class="row"><button id="addP">+ ماده</button><button id="exP">نمونهٔ آماده (نوشابهٔ سیتریکی با بنزوات)</button></div>
+<div class="grid">
+<label class="f">غیریونیزهٔ هدف <span class="u">mg/L</span><input id="pU" type="number" step="1" value="">
+</label><label class="f">pH هدف برای اصلاح (اختیاری)<input id="pTg" type="number" step="0.05" value=""></label>
+</div>
+<div class="note warn">اثر قدرت یونی و CO₂ حل‌شده در مدل نیست؛ pH واقعی ممکن است حدود 0.1 تا 0.4 با آن تفاوت داشته باشد. pKa از مقادیر متداول مرجع‌اند (تقریبی). pH را همیشه با pH‌متر هم کنترل کنید.</div>
+<div class="row"><button class="pri" id="runP">محاسبه</button><button id="csvP">دانلود CSV</button></div>
+<div id="msgP"></div><div id="outP"></div></section>
+
+<section data-pane="u" class="card" hidden>
+<div class="step"><b class="n">6</b><h2>پاستوریزاسیون: PU و کاهش لگاریتمی</h2></div>
+<p class="lead">از لاگ دما-زمان بطری یا محصول (تونل پاستوریزاسیون، هات‌فیل، نگهداری معکوس)، واحد پاستوریزاسیون و کاهش لگاریتمی میکروب هدف را حساب می‌کند. برای پاستوریزاتور لوله‌ای و لولهٔ نگهدار به صفحهٔ لبنیات و برای کنسرو به صفحهٔ فرآیند حرارتی نگاه کنید.</p>
+<textarea id="uD" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">دمای مرجع <span class="u">°C</span><input id="uT" type="number" step="0.1" value="60"></label>
+<label class="f">z <span class="u">°C</span><input id="uZ" type="number" step="0.01" value="6.94"></label>
+<label class="f">PU هدف<input id="uP" type="number" step="1" value="15"></label>
+<label class="f">D<sub>ref</sub> میکروب هدف در دمای مرجع <span class="u">min (اختیاری)</span><input id="uDr" type="number" step="0.1" value=""></label>
+</div>
+<div class="row"><input type="file" id="uF" accept=".csv,.txt" style="max-width:260px"><button id="exU">نمونهٔ تونل</button><button id="exU2">نمونهٔ هات‌فیل</button><button class="pri" id="runU">محاسبه</button><button id="csvU">دانلود CSV</button></div>
+<div id="msgU"></div><div id="outU"></div></section>
+
+<section data-pane="f" class="card" hidden>
+<div class="step"><b class="n">7</b><h2>پر کردن: انبساط حرارتی، هدف وزن و خلأ</h2></div>
+<p class="lead">حجم اعلامی در 20°C است. در پر کردن گرم یا سرد حجم و جرم هدف چک‌ویر باید اصلاح شود؛ با خنک‌شدن بعد از درب‌بندی در بطری هات‌فیل خلأ ایجاد می‌شود. ابزار هر دو و هدف میانگین برای ایمنی وزن را می‌دهد.</p>
+<div class="grid">
+<label class="f">حجم اعلامی در 20°C <span class="u">mL</span><input id="fV" type="number" step="10" value="500"></label>
+<label class="f">بریکس محصول<input id="fB" type="number" step="0.1" value="10.5"></label>
+<label class="f">دمای پر کردن / درب‌بندی <span class="u">°C</span><input id="fT" type="number" step="1" value="85"></label>
+<label class="f">دمای نهایی <span class="u">°C</span><input id="fT2" type="number" step="1" value="20"></label>
+<label class="f">حجم کامل بطری (brimful) <span class="u">mL</span><input id="fVb" type="number" step="1" value="560"></label>
+<label class="f">SD حجم پر کردن <span class="u">mL</span><input id="fSD" type="number" step="0.1" value="1.5"></label>
+<label class="f">ریسک زیر حجم اعلامی<select id="fAl"><option value="0.05">1 از 20</option><option value="0.01">1 از 100</option><option value="0.001" selected>1 از 1000</option></select></label>
+<label class="f">تولید سالانه <span class="u">بطری</span><input id="fYr" type="number" step="1000000" value="30000000"></label>
+<label class="f">قیمت محصول <span class="u">/L</span><input id="fPr" type="number" step="1" value="20"></label>
+</div>
+<div class="note warn">بطری صلب فرض شده است؛ بطری PET با پنل خلأ بخشی از خلأ را جذب می‌کند. حد مجاز خلأ را از سازندهٔ بطری بگیرید.</div>
+<div class="row"><button class="pri" id="runF">محاسبه</button><button id="csvF">دانلود CSV</button></div>
+<div id="msgF"></div><div id="outF"></div></section>
+
+<section data-pane="o" class="card" hidden>
+<div class="step"><b class="n">8</b><h2>اسمولالیته نوشیدنی ورزشی و انرژی‌زا</h2></div>
+<p class="lead">از دستور (g/L) تعداد ذرات فعال اسمزی را می‌شمارد و اسمولالیته (mOsm/kg آب) و گروه هیپو/ایزو/هایپرتونیک را می‌دهد.</p>
+<div class="tw"><table class="edit" id="oT"></table></div>
+<div class="row"><button id="addO">+ ماده</button><button id="exO">نمونهٔ آماده</button><button class="pri" id="runO">محاسبه</button></div>
+<div class="note warn">رفتار ایده‌آل فرض شده است (i = تعداد یون‌ها)؛ اسمولالیتهٔ واقعی را با اسمومتر (انجماد) بسنجید. اسیدها و نمک‌های ضعیف را i = 1 تا 2 بگذارید.</div>
+<div id="msgO"></div><div id="outO"></div></section>
+<section class="card guide"><h2>راهنما: فرمول‌ها و ورودی‌ها</h2><p class="lead">هر بخش را باز کنید. ثابت‌ها و مرزهای گروه‌بندی از دانش عمومی هستند و تأیید رسمی نشده‌اند؛ مقدار استاندارد محصول و مقررات خودتان را جایگزین کنید.</p><details class="g"><summary>شربت، بریکس و اصلاح مخزن</summary><h4>این چه کاری می‌کند؟</h4><p>مقدار شربت و آب هر بچ را با بالانس جرم می‌دهد (چون حجم‌ها جمع نمی‌شوند)، نسبت اختلاط را می‌گوید و اگر مخزن خارج از بریکس هدف باشد مقدار آب یا شربت اصلاحی را می‌دهد. شیرین‌کننده‌های غیرقندی را هم بر اساس قدرت نسبی به mg/L تبدیل می‌کند.</p><h4>فرمول</h4><div class="eq">M = V·ρ(B<sub>t</sub>) ؛ شربت = M·B<sub>t</sub> / B<sub>s</sub> ؛ آب = M − شربت<br>اصلاح با آب: w = M·(B<sub>c</sub> − B<sub>t</sub>)/B<sub>t</sub> ؛ با شربت: s = M·(B<sub>t</sub> − B<sub>c</sub>)/(B<sub>s</sub> − B<sub>t</sub>)<br>SG = 1 + B/(258.6 − (B/258.2)·227.1)</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">B</b> — بریکس: درصد جرمی ساکارز معادل</li><li><b dir="ltr">ρ(B)</b> — چگالی محلول در 20°C از SG؛ ضرب در 998.2 kg/m³</li><li><b dir="ltr">M, V</b> — جرم و حجم نهایی</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>بریکس را با رفرکتومتر (نمونهٔ خنک‌شده یا با جبران دما) یا دانسیمتر بخوانید. با رفرکتومتر در نمونهٔ کربناته، اول گاز را خارج کنید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">بریکس شربت</td><td class="t" style="white-space:normal">برگهٔ تأمین‌کننده یا رفرکتومتر؛ شکر مایع معمولاً 65</td></tr><tr><td class="t">بریکس هدف</td><td class="t" style="white-space:normal">مشخصهٔ محصول؛ شامل اسید و طعم‌دهنده</td></tr><tr><td class="t">بریکس فعلی مخزن</td><td class="t" style="white-space:normal">رفرکتومتر دیجیتال بعد از 10 دقیقه هم‌زدن</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: 10000 L با 10.5 بریکس از شربت 65 بریکس ⇒ 1680 kg شربت (1273 L) + 8722 kg آب؛ نسبت آب:شربت حجمی 6.87:1. مخزن 10000 kg با 11.2 بریکس ⇒ 667 kg آب.</p><div class="note warn">قدرت شیرین‌کنندگی (×200 برای آسپارتام و ...) تقریبی است و با غلظت و pH تغییر می‌کند.</div></details><details class="g"><summary>آبمیوه: بازسازی، ترکیب، تغلیظ</summary><h4>این چه کاری می‌کند؟</h4><p>بازسازی از کنسانتره تا بریکس هدف و مقایسهٔ هزینه با NFC؛ ترکیب چند آبمیوه با بریکس، اسیدیته و نسبت بریکس/اسید؛ و تبخیرکنندهٔ چندمرحله‌ای.</p><h4>فرمول</h4><div class="eq">کنسانتره = M·B<sub>t</sub>/B<sub>c</sub> ؛ بریکس ترکیب = Σ m<sub>i</sub>·B<sub>i</sub> / Σ m<sub>i</sub><br>E = F·(1 − B<sub>f</sub>/B<sub>c</sub>) ؛ بخار = E / (N·eco)</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">B_t</b> — بریکس تک‌قوت مجاز میوه (استاندارد ملی یا Codex)؛ برای هر میوه فرق می‌کند</li><li><b dir="ltr">N</b> — تعداد اثر تبخیرکننده</li><li><b dir="ltr">eco</b> — kg آب تبخیری به ازای هر kg بخار در هر اثر؛ حدود 0.8 تا 0.9 (تقریبی)</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>بریکس را اندازه بگیرید. اسیدیته را با تیتراسیون با NaOH 0.1 N تا pH 8.2 و بیان به‌صورت سیتریک (یا مالیک برای سیب) بگیرید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">بریکس کنسانتره</td><td class="t" style="white-space:normal">برگهٔ هر محموله</td></tr><tr><td class="t">بریکس هدف</td><td class="t" style="white-space:normal">استاندارد محصول</td></tr><tr><td class="t">قیمت‌ها</td><td class="t" style="white-space:normal">فاکتور خرید</td></tr><tr><td class="t">اسیدیته</td><td class="t" style="white-space:normal">تیتراسیون آزمایشگاه</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: 10000 L با 11.2 بریکس از کنسانتره 65 ⇒ 1797 kg کنسانتره. خوراک 10000 kg/h از 11.5 به 65 بریکس ⇒ 8231 kg/h آب تبخیری و بخار 2421 kg/h با 4 اثر.</p><div class="note warn">نسبت بریکس/اسید و بریکس مجاز باید با استاندارد همان آبمیوه سنجیده شود. «بدون قند افزوده» و درصد آبمیوه روی برچسب مقررات جدا دارند.</div></details><details class="g"><summary>کربناسیون</summary><h4>این چه کاری می‌کند؟</h4><p>نسبت بین حجم CO₂ حل‌شده، دما و فشار را حل می‌کند. می‌گوید برای حجم هدف چه فشاری لازم است، در فشار فعلی چه حجمی دارید، فشار بطری در انبار 38°C چقدر می‌شود و روزانه چند kg CO₂ می‌خواهید.</p><h4>فرمول</h4><div class="eq">P<sub>psi</sub> = −16.6999 − 0.0101059·T + 0.00116512·T² + 0.173354·T·V + 4.24267·V − 0.0684226·V² (T بر حسب °F)<br>CO₂ (g/L) = 1.977 · V</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">V</b> — حجم CO₂ (volumes): حجم گاز در 0°C و 1 atm به ازای هر حجم مایع</li><li><b dir="ltr">T</b> — دمای مایع در کربناتور</li><li><b dir="ltr">P</b> — فشار گیج</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>فشار گیج را روی کربناتور بخوانید و دمای محصول را با ترموکوپل در مایع بگیرید. حجم واقعی را با دستگاه Zahm-Nagel (سنجش فشار + دما) یا آنالایزر CO₂ بسنجید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">دمای محصول</td><td class="t" style="white-space:normal">ترموکوپل در خط کربناتور</td></tr><tr><td class="t">فشار</td><td class="t" style="white-space:normal">گیج کالیبره</td></tr><tr><td class="t">حجم هدف</td><td class="t" style="white-space:normal">دستور محصول (نوشابهٔ معمولی حدود 3 تا 4 volume؛ تقریبی)</td></tr><tr><td class="t">مصرف روزانه و قیمت</td><td class="t" style="white-space:normal">برنامهٔ تولید و فاکتور</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: 3.2 حجم در 4°C ⇒ 1.33 bar گیج؛ همان بطری در 38°C ⇒ 4.32 bar. CO₂ لازم 6.3 g در هر لیتر.</p><div class="note warn">همبستگی برای آب/آبجو است؛ در نوشابهٔ شیرین کمی فرق می‌کند. حد فشار بطری و درب را از سازنده بگیرید.</div></details><details class="g"><summary>آب: لانژیه، RO و ترکیب معدنی</summary><h4>این چه کاری می‌کند؟</h4><p>آنالیز یونی آب را کنترل می‌کند (تعادل کاتیون-آنیون)، سختی و قلیائیت و شاخص لانژیه را می‌دهد، بالانس RO و خطر رسوب پساب را حساب می‌کند و با برنامه‌ریزی خطی ارزان‌ترین نمک‌ها برای ترکیب معدنی آب RO را پیدا می‌کند.</p><h4>فرمول</h4><div class="eq">LSI = pH − pH<sub>s</sub> ؛ pH<sub>s</sub> = (9.3 + A + B) − (C + D)<br>A = (log TDS − 1)/10 ؛ B = −13.12·log(T+273) + 34.55 ؛ C = log(Ca به‌صورت CaCO₃) − 0.4 ؛ D = log(قلیائیت)<br>CF = ln(1/(1−Y))/Y ؛ C<sub>p</sub> = (1−R)·C<sub>f</sub>·CF ؛ C<sub>c</sub> = (C<sub>f</sub> − Y·C<sub>p</sub>)/(1−Y)</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">Y</b> — بازیابی RO: پرمیت ÷ خوراک</li><li><b dir="ltr">R</b> — دفع نمک غشا</li><li><b dir="ltr">LSI > 0</b> — تمایل به رسوب CaCO₃</li><li><b dir="ltr">LSI < 0</b> — خورنده</li><li><b dir="ltr">x_salt</b> — mg/L هر نمک؛ مجهول‌های برنامه‌ریزی خطی</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>آنالیز کامل آب خام را از آزمایشگاه بگیرید. سختی = 2.497·Ca + 4.118·Mg (mg/L CaCO₃). اگر خطای تعادل یونی بیش از 5٪ بود، آنالیز را تکرار کنید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">یون‌ها</td><td class="t" style="white-space:normal">آزمایشگاه معتبر (ICP یا تیتراسیون/یون‌کروماتوگرافی)</td></tr><tr><td class="t">pH و دما</td><td class="t" style="white-space:normal">اندازه‌گیری در محل؛ pH در محل از نمونهٔ باز‌مانده معتبرتر است</td></tr><tr><td class="t">بازیابی و دفع</td><td class="t" style="white-space:normal">برگهٔ طراحی غشا / سیستم RO</td></tr><tr><td class="t">بازه‌های ترکیب</td><td class="t" style="white-space:normal">استاندارد آب آشامیدنی/معدنی یا ادعای برچسب</td></tr><tr><td class="t">قیمت نمک‌ها</td><td class="t" style="white-space:normal">فاکتور</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: Ca 80، Mg 20، Na 45، K 3، HCO₃ 250، SO₄ 85، Cl 70، NO₃ 10 mg/L ⇒ خطای تعادل −2.1٪ و TDS 563. با RO در 75٪ بازیابی و 98٪ دفع، TDS پساب به 2190 mg/L می‌رسد و LSI پساب 1.27 (رسوب‌ساز) می‌شود؛ بنابراین ضدرسوب یا بازیابی کمتر لازم است.</p><div class="note warn">LSI فقط رسوب کربنات را بررسی می‌کند؛ سیلیس، سولفات باریم/استرانسیم و آهن جدا هستند. گرید غذایی نمک‌ها و حل‌شدن کامل را کنترل کنید.</div></details><details class="g"><summary>pH، اسیدیته و نگهدارنده</summary><h4>این چه کاری می‌کند؟</h4><p>pH محلول اسیدها و نمک‌های چندپروتونی را با موازنهٔ بار الکتریکی حل می‌کند. سپس اسیدیتهٔ قابل تیتراسیون، بنزوییک و سوربیک غیریونیزه (فعال)، pH بیشینه برای اثر نگهدارنده و مقدار سود/اسید لازم برای pH هدف را می‌دهد.</p><h4>فرمول</h4><div class="eq">[Na⁺] + [K⁺] + [H⁺] = Σ c<sub>i</sub>·q<sub>i</sub>(pH) + [OH⁻] ؛ q<sub>i</sub> = میانگین بار منفی هر مولکول اسید<br>f<sub>undis</sub> = 1/(1 + 10<sup>pH−pKa</sup>)</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">pKa سیتریک</b> — 3.13 ، 4.76 ، 6.40</li><li><b dir="ltr">pKa بنزوییک</b> — 4.20</li><li><b dir="ltr">pKa سوربیک</b> — 4.76</li><li><b dir="ltr">TA</b> — قابل تیتراسیون تا pH 8.2 و بیان به‌صورت سیتریک</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>در عمل pH را اندازه بگیرید و مدل را برای مقایسهٔ دستورها استفاده کنید؛ نگهدارنده در pH بالاتر از حدود 4.5 کم‌اثر است چون بیشتر یونیزه است.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">g/L هر ماده</td><td class="t" style="white-space:normal">دستور و برگهٔ آنالیز (درصد خلوص فسفریک و لاکتیک را رعایت کنید)</td></tr><tr><td class="t">غیریونیزهٔ هدف</td><td class="t" style="white-space:normal">دادهٔ MIC میکروب هدف در محصول شما (از آزمایشگاه میکروبی)</td></tr><tr><td class="t">حد مجاز نگهدارنده</td><td class="t" style="white-space:normal">مقررات کشور</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: سیتریک 1.8 + سیترات سدیم 0.6 + بنزوات سدیم 0.2 g/L ⇒ pH 3.38، اسیدیته 1.79 g/L سیتریک و 147 mg/L بنزوییک فعال از 170 mg/L کل.</p><div class="note warn">فعالیت یونی و CO₂ لحاظ نشده؛ pH واقعی را اندازه بگیرید.</div></details><details class="g"><summary>پاستوریزاسیون: PU و کاهش لگاریتمی</summary><h4>این چه کاری می‌کند؟</h4><p>لاگ دمای نقطهٔ سرد بطری را به واحد پاستوریزاسیون و در صورت وجود D میکروب، به کاهش لگاریتمی تبدیل می‌کند. برای تونل پاستوریزاسیون و هات‌فیل مناسب است.</p><h4>فرمول</h4><div class="eq">PU = Σ 10<sup>(T−60)/6.94</sup>·Δt ؛ log کاهش = F / D<sub>ref</sub></div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">T_ref و z</b> — برای PU استاندارد 60 و 6.94؛ برای میکروب دیگر مقادیر خودش</li><li><b dir="ltr">D_ref</b> — زمان کاهش 90٪ در دمای مرجع</li><li><b dir="ltr">PU هدف</b> — مشخصهٔ محصول/مرجع فرآیند</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>دیتالاگر بی‌سیم را با یک بطری عبور دهید و دما را هر 10 تا 30 ثانیه ثبت کنید؛ یا بطری با ترموکوپل مستقیم.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">لاگ دما</td><td class="t" style="white-space:normal">دیتالاگر داخل بطری سردترین نقطهٔ تونل</td></tr><tr><td class="t">PU هدف</td><td class="t" style="white-space:normal">استاندارد/مرجع فرآیند (نمونهٔ 15 فقط مثال)</td></tr><tr><td class="t">D و z میکروب</td><td class="t" style="white-space:normal">منابع علمی یا آزمایشگاه برای همان محصول</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونهٔ تونل: 8 دقیقه در حدود 62°C با شیب‌های گرم و سردشدن به حدود 21 PU می‌رسد. در هات‌فیل 85°C هر دقیقه ≈ 3700 PU است.</p><div class="note warn">D و z در هر محصول متفاوت است؛ بدون اعتبارسنجی لگاریتم کاهش را قطعی نگیرید.</div></details><details class="g"><summary>پر کردن: انبساط و خلأ</summary><h4>این چه کاری می‌کند؟</h4><p>حجم اعلامی در 20°C است. ابزار حجم و جرم هدف پر کردن را در دمای پر کردن می‌دهد، حاشیهٔ ایمنی وزن را حساب می‌کند و خلأ بعد از خنک‌شدن را از بالانس گاز و فشار بخار آب می‌دهد.</p><h4>فرمول</h4><div class="eq">ρ(T) = ρ<sub>20</sub>(B)·ρ<sub>w</sub>(T)/ρ<sub>w</sub>(20)<br>p<sub>air,2</sub> = (101.325 − p<sub>v</sub>(T<sub>1</sub>))·(V<sub>h1</sub>/V<sub>h2</sub>)·(T<sub>2</sub>/T<sub>1</sub>) ؛ خلأ = 101.325 − p<sub>air,2</sub> − p<sub>v</sub>(T<sub>2</sub>)<br>هدف میانگین = حجم اعلامی + z·SD</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">V_h</b> — حجم فضای خالی بطری</li><li><b dir="ltr">p_v</b> — فشار بخار آب (Antoine)</li><li><b dir="ltr">SD</b> — انحراف معیار حجم پر کردن</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>حجم پر کردن را با 30 بطری متوالی در دمای ثابت اندازه بگیرید (وزن ÷ چگالی). فضای خالی را با پر کردن بطری با آب در آزمایشگاه حساب کنید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">حجم بطری (brimful)</td><td class="t" style="white-space:normal">مشخصات بطری یا آزمایش پر کردن تا لبه</td></tr><tr><td class="t">دمای پر کردن</td><td class="t" style="white-space:normal">دماسنج خروجی فیلر</td></tr><tr><td class="t">SD</td><td class="t" style="white-space:normal">آمار 30 بطری</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: 500 mL با 10.5 بریکس در 85°C ⇒ انبساط 3.05٪، جرم 520.1 g؛ خلأ بطری صلب با 560 mL حجم کامل ≈ 72 kPa؛ هدف حجم در 20°C با SD = 1.5 و ریسک 1/1000 ⇒ 504.6 mL.</p><div class="note warn">بطری PET کمی تغییر شکل می‌دهد و بخشی از خلأ را جذب می‌کند؛ مقررات وزن/حجم کشور را رعایت کنید.</div></details><details class="g"><summary>اسمولالیته</summary><h4>این چه کاری می‌کند؟</h4><p>اسمولالیتهٔ نوشیدنی ورزشی را از دستور حساب می‌کند.</p><h4>فرمول</h4><div class="eq">mOsm/L = Σ i·(g/L)/MW·1000 ؛ mOsm/kg = mOsm/L / (kg آب در هر لیتر)</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">i</b> — تعداد ذرات آزاد: 1 برای قند، 2 برای NaCl و KCl، بین 1 و 4 برای نمک‌های دیگر</li><li><b dir="ltr">MW</b> — جرم مولی</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>برای تأیید، با اسمومتر (کاهش نقطهٔ انجماد) اندازه بگیرید؛ مدل ایده‌آل در غلظت‌های بالا کمی بیشتر برآورد می‌کند.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">g/L هر ماده</td><td class="t" style="white-space:normal">دستور</td></tr><tr><td class="t">جرم مولی</td><td class="t" style="white-space:normal">برگهٔ ماده</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: 40 g/L ساکارز + 10 g/L گلوکز + 1 g/L NaCl + اجزای کوچک (KCl، اسید و سیترات) ⇒ حدود 234 mOsm/kg (هیپوتونیک طبق مرزهای سرانگشتی).</p><div class="note warn">گروه‌بندی هیپو/ایزو/هایپرتونیک مرزهای سرانگشتی است.</div></details></section>
+</main>
+<footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+<script src="beverage.js"></script>
+
+</body></html>

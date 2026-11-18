@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>شیرینی و نان صنعتی — بیسکویت، ویفر، کوکی، کیک</title>
+<meta name="description" content="ابزارهای محاسباتی بیسکویت، ویفر، کوکی و کیک: بالانس خمیر، دمای خمیر، افت پخت، انرژی فر، ویفر، مهاجرت رطوبت، زمان پخت، کنترل کیفیت">
+<link rel="preload" href="vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html">ابزارهای مهندسی غذا</a>
+<nav><a href="thermal.html">فرآیند حرارتی</a><a href="formulation.html">فرمولاسیون</a><a href="fitting.html">برازش مدل</a><a href="dairy.html">لبنیات</a><a href="bakery.html" class="cur">شیرینی و نان</a><a href="beverage.html">نوشیدنی و آب</a><a href="about.html">روش‌ها</a></nav></div></header>
+<main class="wrap">
+<h1>صنایع شیرینی و نان‌های صنعتی</h1>
+<p class="lead">هفت ابزار برای بیسکویت، ویفر، کوکی و کیک: هر کدام چند مرحلهٔ به‌هم‌وابسته (بالانس جرم و انرژی، معادلهٔ گرما، تعادل رطوبت بین لایه‌ها، آمار) را در یک مرحله انجام می‌دهد. اعداد پیش‌فرض نمونه‌اند؛ داده‌های خط خودتان را وارد کنید.</p>
+<div class="tabs" id="tb"><button data-tab="d">خمیر و دمای خمیر</button><button data-tab="o">پخت و فر</button><button data-tab="c">کیک</button><button data-tab="w">ویفر</button><button data-tab="m">مهاجرت رطوبت</button><button data-tab="t">زمان پخت</button><button data-tab="q">کنترل کیفیت</button></div>
+
+<section data-pane="d" class="card">
+<div class="step"><b class="n">1</b><h2>بالانس خمیر، aw و دمای آب</h2></div>
+<p class="lead">از دستور (kg در یک بچ) رطوبت و درصدهای نانوایی، aw تقریبی خمیر و <b>دمای آب لازم</b> برای رسیدن به دمای هدف خمیر را حساب می‌کند (با بالانس انرژی: دمای ماده‌ها، گرمای اصطکاک میکسر و در صورت نیاز یخ). ردیف اول باید آرد باشد.</p>
+<div class="tw"><table class="edit" id="dT"></table></div>
+<div class="row"><button id="addD">+ ماده</button><button id="exD">نمونهٔ آماده (بیسکویت نیمه‌شیرین)</button></div>
+<div class="grid">
+<label class="f">آب افزوده <span class="u">kg</span><input id="dwat" type="number" step="0.1" value="14"></label>
+<label class="f">دمای هدف خمیر <span class="u">°C</span><input id="dddt" type="number" step="0.5" value="32"></label>
+<label class="f">توان میکسر <span class="u">kW</span><input id="dpow" type="number" step="0.5" value="15"></label>
+<label class="f">زمان میکس <span class="u">min</span><input id="dmin" type="number" step="0.5" value="8"></label>
+<label class="f">سهم انرژی که گرمای خمیر می‌شود <span class="u">%</span><input id="dfr" type="number" step="5" value="40"></label>
+<label class="f">حداقل دمای آب (بالای آن، یخ) <span class="u">°C</span><input id="dtmin" type="number" step="0.5" value="2"></label>
+<label class="f">رطوبت هدف خمیر (اختیاری) <span class="u">%</span><input id="dmt" type="number" step="0.1" value=""></label>
+</div>
+<div class="note warn">سهم گرمای اصطکاک را از یک اندازه‌گیری واقعی به دست آورید: دمای خمیر پس از میکس را با دمای محاسبه‌شده مقایسه کنید و همین عدد را اصلاح کنید.</div>
+<div class="row"><button class="pri" id="runD">محاسبه</button><button id="csvD">دانلود CSV</button></div>
+<div id="msgD"></div><div id="outD"></div></section>
+
+<section data-pane="o" class="card" hidden>
+<div class="step"><b class="n">2</b><h2>پخت: افت وزن، انرژی و ارزش رطوبت</h2></div>
+<p class="lead">از وزن خمیر هر قطعه و رطوبت قبل و بعد پخت، وزن محصول، آب تبخیرشده، انرژی لازم و ظرفیت فر نواری را می‌دهد. نتیجهٔ مهم: <b>هر یک درصد رطوبت نهایی بالاتر، چند کیلو «آب فروخته‌شده» در هر تُن خمیر است</b> و وزن خمیر لازم برای وزن اعلامی.</p>
+<div class="grid">
+<label class="f">وزن خمیر هر قطعه <span class="u">g</span><input id="bdo" type="number" step="0.1" value="10"></label>
+<label class="f">رطوبت خمیر <span class="u">%</span><input id="bm0" type="number" step="0.1" value="18"></label>
+<label class="f">رطوبت محصول در خروج فر <span class="u">%</span><input id="bmf" type="number" step="0.1" value="2.5"></label>
+<label class="f">افت مواد جامد (CO₂ و آمونیاک و ...) <span class="u">%</span><input id="bsl" type="number" step="0.1" value="0.5"></label>
+<label class="f">دمای خمیر <span class="u">°C</span><input id="bT0" type="number" step="1" value="30"></label>
+<label class="f">دمای محصول در خروج <span class="u">°C</span><input id="bTf" type="number" step="1" value="105"></label>
+<label class="f">گرمای ویژهٔ محصول <span class="u">kJ/kg·K</span><input id="bcp" type="number" step="0.1" value="2"></label>
+<label class="f">سرعت نوار <span class="u">m/min</span><input id="bsp" type="number" step="0.5" value="10"></label>
+<label class="f">طول مؤثر فر <span class="u">m</span><input id="bln" type="number" step="1" value="45"></label>
+<label class="f">فاصلهٔ ردیف‌های قطعه (pitch) <span class="u">mm</span><input id="bpi" type="number" step="1" value="60"></label>
+<label class="f">تعداد قطعه در عرض نوار<input id="bac" type="number" step="1" value="18"></label>
+<label class="f">توان ورودی اندازه‌گیری‌شدهٔ فر (اختیاری) <span class="u">kW</span><input id="bkw" type="number" step="10" value=""></label>
+<label class="f">وزن نهایی هدف هر قطعه (اختیاری) <span class="u">g</span><input id="btg" type="number" step="0.1" value="8"></label>
+<label class="f">افت وزن بعد از فر تا بسته‌بندی <span class="u">%</span><input id="bpost" type="number" step="0.1" value="0.5"></label>
+</div>
+<div class="row"><button class="pri" id="runO">محاسبه</button><button id="csvO">دانلود CSV</button></div>
+<div id="msgO"></div><div id="outO"></div></section>
+
+<section data-pane="c" class="card" hidden>
+<div class="step"><b class="n">3</b><h2>کیک: نسبت‌ها، گاز، پر کردن قالب و aw</h2></div>
+<p class="lead">از دستور (g)، تعادل ترکیب کیک (قواعد سرانگشتی نسبت شکر/آرد و مایع/شکر)، گاز CO₂ حاصل از جوش‌شیرین و ماده اسیدی (با ارزش خنثی‌سازی NV)، وزن خمیر لازم برای پر کردن قالب و aw تقریبی کیک پخته را می‌دهد.</p>
+<div class="grid">
+<label class="f">آرد <span class="u">g</span><input id="kfl" type="number" step="1" value="100"></label>
+<label class="f">شکر <span class="u">g</span><input id="ksu" type="number" step="1" value="110"></label>
+<label class="f">چربی (کره/شورتنینگ/روغن) <span class="u">g</span><input id="kfa" type="number" step="1" value="50"></label>
+<label class="f">آب چربی <span class="u">%</span><input id="kfw" type="number" step="1" value="0"></label>
+<label class="f">تخم‌مرغ کامل <span class="u">g</span><input id="keg" type="number" step="1" value="60"></label>
+<label class="f">مایع (شیر/آب) <span class="u">g</span><input id="kli" type="number" step="1" value="90"></label>
+<label class="f">آب مایع <span class="u">%</span><input id="klw" type="number" step="1" value="87"></label>
+<label class="f">سایر خشک (شیرخشک/کاکائو) <span class="u">g</span><input id="kot" type="number" step="1" value="0"></label>
+<label class="f">جوش‌شیرین <span class="u">g</span><input id="kso" type="number" step="0.1" value="0.9"></label>
+<label class="f">ماده اسیدی <span class="u">g</span><input id="kac" type="number" step="0.1" value="1.3"></label>
+<label class="f">NV ماده اسیدی <span class="u">%</span><input id="knv" type="number" step="1" value="72"></label>
+<label class="f">رطوبت هدف کیک پخته <span class="u">%</span><input id="kmf" type="number" step="0.5" value="24"></label>
+<label class="f">حجم قالب <span class="u">mL</span><input id="kpan" type="number" step="10" value="1000"></label>
+<label class="f">چگالی خمیر اندازه‌گیری‌شده <span class="u">g/mL</span><input id="ksg" type="number" step="0.01" value="0.95"></label>
+<label class="f">حجم مخصوص کیک پخته <span class="u">mL/g</span><input id="ksv" type="number" step="0.1" value="2.6"></label>
+<label class="f">سطح پرشدگی هدف کیک (1 = لبهٔ قالب)<input id="kft" type="number" step="0.05" value="1"></label>
+</div>
+<div class="row"><button class="pri" id="runC">محاسبه</button><button id="csvC">دانلود CSV</button></div>
+<div id="msgC"></div><div id="outC"></div></section>
+
+<section data-pane="w" class="card" hidden>
+<div class="step"><b class="n">4</b><h2>ویفر: ورقه، تبخیر و ساندویچ کردن</h2></div>
+<p class="lead">از خمیر هر صفحهٔ فر ویفر تا بار نهایی: وزن ورقه، آب تبخیرشده، توان تبخیر فر، تعداد قطعه از هر بلوک و ضایعات برش، سهم کرم، هزینهٔ هر بار، و <b>مقدار کرم لازم در هر لایه</b> تا با SD وزن شما، میانگین از وزن اعلامی پایین نیاید.</p>
+<h3>ورقهٔ ویفر</h3>
+<div class="grid">
+<label class="f">خمیر هر صفحه (plate) <span class="u">g</span><input id="wba" type="number" step="1" value="62"></label>
+<label class="f">ماده جامد خمیر <span class="u">%</span><input id="wso" type="number" step="0.5" value="40"></label>
+<label class="f">رطوبت ورقه <span class="u">%</span><input id="wmo" type="number" step="0.1" value="2"></label>
+<label class="f">دمای خمیر <span class="u">°C</span><input id="wT0" type="number" step="1" value="30"></label>
+<label class="f">طول صفحه <span class="u">mm</span><input id="wpl" type="number" step="1" value="350"></label>
+<label class="f">عرض صفحه <span class="u">mm</span><input id="wpw" type="number" step="1" value="230"></label>
+<label class="f">زمان یک سیکل پخت <span class="u">s</span><input id="wcy" type="number" step="1" value="140"></label>
+<label class="f">تعداد صفحهٔ فر<input id="wpn" type="number" step="1" value="120"></label>
+</div>
+<h3>ساندویچ و بار</h3>
+<div class="grid">
+<label class="f">تعداد ورقه در هر بلوک<input id="wn" type="number" step="1" value="4"></label>
+<label class="f">کرم هر لایه (کل سطح ورقه) <span class="u">g</span><input id="wcr" type="number" step="0.5" value="46"></label>
+<label class="f">چربی کرم <span class="u">%</span><input id="wcf" type="number" step="1" value="33"></label>
+<label class="f">طول بار <span class="u">mm</span><input id="wbl" type="number" step="1" value="100"></label>
+<label class="f">عرض بار <span class="u">mm</span><input id="wbw" type="number" step="1" value="40"></label>
+<label class="f">قیمت ورقه <span class="u">/kg</span><input id="wcs" type="number" step="1" value="150"></label>
+<label class="f">قیمت کرم <span class="u">/kg</span><input id="wcc" type="number" step="1" value="280"></label>
+<label class="f">وزن اعلامی بار <span class="u">g</span><input id="wdc" type="number" step="0.1" value="11"></label>
+<label class="f">SD وزن بار <span class="u">g</span><input id="wsd" type="number" step="0.05" value="0.4"></label>
+<label class="f">ریسک زیر وزن اعلامی<select id="wal"><option value="0.05">1 از 20</option><option value="0.01">1 از 100</option><option value="0.001" selected>1 از 1000</option></select></label>
+<label class="f">تولید سالانه <span class="u">بار</span><input id="wyr" type="number" step="100000" value="20000000"></label>
+</div>
+<div class="row"><button class="pri" id="runW">محاسبه</button><button id="csvW">دانلود CSV</button></div>
+<div id="msgW"></div><div id="outW"></div></section>
+
+<section data-pane="m" class="card" hidden>
+<div class="step"><b class="n">5</b><h2>مهاجرت رطوبت بین لایه‌ها</h2></div>
+<p class="lead">در بیسکویت کرم‌دار، ویفر با فیلینگ یا کیک با روکش، آب از لایهٔ با aw بالاتر به لایهٔ پایین‌تر می‌رود تا aw برابر شود؛ لایهٔ ترد نرم می‌شود. ابزار aw تعادلی و رطوبت نهایی هر لایه را از پایستگی آب حساب می‌کند. برای هر لایه رطوبت در دو aw (آزمایش در دو رطوبت نسبی) لازم است؛ یا از صفحهٔ «برازش مدل» ایزوترم بگیرید.</p>
+<div class="tw"><table class="edit" id="mT"></table></div>
+<div class="row"><button id="addM">+ لایه</button><button id="exM">نمونهٔ آماده</button></div>
+<div class="grid"><label class="f">aw بحرانی برای از دست رفتن تردی <span class="u">(از پانل حسی خودتان)</span><input id="mcr" type="number" step="0.01" value="0.45"></label></div>
+<div class="note warn">مدل فقط حالت پایانی (زمان بی‌نهایت) را می‌دهد، نه سرعت. سرعت به لایهٔ مانع (چربی، شکلات) بستگی دارد و باید با نگهداری نمونه در اتاق گرمخانه اندازه‌گیری شود. ایزوترم بین دو نقطه خطی فرض شده است.</div>
+<div class="row"><button class="pri" id="runM">محاسبه</button><button id="csvM">دانلود CSV</button></div>
+<div id="msgM"></div><div id="outM"></div></section>
+
+<section data-pane="t" class="card" hidden>
+<div class="step"><b class="n">6</b><h2>زمان پخت از دمای مرکز (هدایت گرما)</h2></div>
+<p class="lead">معادلهٔ هدایت گرما در یک ورقهٔ ضخیم (کیک، نان، کوکی) به روش تفاضل محدود حل می‌شود. اگر دمای مرکز را با ترموکوپل ثبت کرده‌اید، ابزار ضریب انتقال حرارت فر (h) و هدایت (k) را از داده <b>برازش</b> می‌کند و سپس زمان پخت را برای ضخامت یا دمای فر دیگر پیش‌بینی می‌کند.</p>
+<div class="grid">
+<label class="f">ضخامت محصول <span class="u">mm</span><input id="tL" type="number" step="1" value="30"></label>
+<label class="f">گرمایش<select id="tTwo"><option value="0">یک‌طرفه (قالب، کف عایق)</option><option value="1">دو‌طرفه (کوکی/بیسکویت روی نوار)</option></select></label>
+<label class="f">هدایت k <span class="u">W/m·K</span><input id="tk" type="number" step="0.01" value="0.3"></label>
+<label class="f">چگالی <span class="u">kg/m³</span><input id="trho" type="number" step="10" value="450"></label>
+<label class="f">گرمای ویژه <span class="u">kJ/kg·K</span><input id="tcp" type="number" step="0.1" value="2.5"></label>
+<label class="f">ضریب انتقال گرمای فر h <span class="u">W/m²·K</span><input id="th" type="number" step="1" value="50"></label>
+<label class="f">دمای اولیه <span class="u">°C</span><input id="tT0" type="number" step="1" value="22"></label>
+<label class="f">آب تبخیرشده <span class="u">kg/kg</span><input id="txe" type="number" step="0.01" value="0.03"></label>
+<label class="f">دمای هدف مرکز <span class="u">°C</span><input id="ttg" type="number" step="1" value="96"></label>
+</div>
+<h3>برنامهٔ دمای فر <small class="lead">(هر خط: مدت min ، دمای °C)</small></h3>
+<textarea id="tz" spellcheck="false">40, 180</textarea>
+<h3>داده‌های ترموکوپل مرکز <small class="lead">(اختیاری؛ هر خط: زمان min ، دما °C)</small></h3>
+<textarea id="td" spellcheck="false"></textarea>
+<div class="row"><input type="file" id="tdf" accept=".csv,.txt" style="max-width:260px"><button id="exT">نمونهٔ مصنوعی</button><button class="pri" id="runT">پیش‌بینی با مقادیر بالا</button><button class="pri" id="fitT">برازش h و k از داده و پیش‌بینی</button><button id="csvT">دانلود CSV</button></div>
+<div class="note warn">این مدل یک ناحیهٔ همگن با گرمای ویژهٔ ظاهری است؛ تبخیر و پوستهٔ بیسکویت و انبساط کیک را فقط با «آب تبخیرشده» تقریب می‌زند. برای مقایسه و مقیاس‌گذاری خوب است، برای طراحی نهایی باید با داده‌های واقعی برازش شود.</div>
+<div id="msgT"></div><div id="outT"></div></section>
+
+<section data-pane="q" class="card" hidden>
+<div class="step"><b class="n">7</b><h2>کنترل کیفیت: ضریب گسترش کوکی و بخشش وزن</h2></div>
+<h3>ضریب گسترش کوکی (روش 6 کوکی)</h3>
+<p class="lead">شش کوکی را کنار هم (W1) و بعد 90 درجه چرخانده (W2) اندازه بگیرید و ارتفاع شش کوکی روی هم را (T) هم ثبت کنید. ضریب گسترش = قطر ÷ ضخامت. چند آزمون (چند بچ آرد) را وارد کنید.</p>
+<div class="tw"><table class="edit" id="qT"></table></div>
+<div class="row"><button id="addQ">+ آزمون</button><button id="exQ">نمونهٔ آماده</button></div>
+<div class="grid">
+<label class="f">حداقل ضریب پذیرفتنی<input id="qlo" type="number" step="0.1" value="7"></label>
+<label class="f">حداکثر ضریب پذیرفتنی<input id="qhi" type="number" step="0.1" value="9"></label>
+</div>
+<div class="row"><button class="pri" id="runQ">محاسبه ضریب گسترش</button></div>
+<div id="msgQ"></div><div id="outQ"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+<h3>بخشش وزن بسته</h3>
+<p class="lead">وزن چند ده بستهٔ پشت‌سرهم را (هر عدد در یک خط، گرم) وارد کنید. ابزار میانگین هدف بهینه با ریسک انتخابی و ارزش سالانهٔ اضافه‌ای که می‌بخشید را می‌دهد.</p>
+<textarea id="qw" spellcheck="false"></textarea>
+<div class="grid" style="margin-top:10px">
+<label class="f">وزن خالص اعلامی <span class="u">g</span><input id="qdc" type="number" step="0.1" value="400"></label>
+<label class="f">ریسک زیر وزن اعلامی<select id="qal"><option value="0.05">1 از 20</option><option value="0.01">1 از 100</option><option value="0.001" selected>1 از 1000</option></select></label>
+<label class="f">بسته در سال<input id="qyr" type="number" step="100000" value="3000000"></label>
+<label class="f">قیمت محصول <span class="u">/kg</span><input id="qpr" type="number" step="1" value="100"></label>
+</div>
+<div class="row"><button id="exQW">نمونهٔ آماده</button><button class="pri" id="runQW">محاسبه بخشش</button></div>
+<div id="msgQW"></div><div id="outQW"></div></section>
+<section class="card guide"><h2>راهنما: فرمول‌ها و ورودی‌ها</h2><p class="lead">هر بخش را باز کنید. عددهای پیش‌فرض و «محدودهٔ معمول» قاعده‌های سرانگشتی از دانش عمومی هستند و تأیید رسمی نشده‌اند؛ با مشخصهٔ محصول و استاندارد خودتان جایگزین کنید.</p><details class="g"><summary>بالانس خمیر، aw و دمای آب</summary><h4>این چه کاری می‌کند؟</h4><p>از دستور هر بچ، رطوبت و نسبت‌های خمیر را می‌دهد و می‌گوید آب را با چه دمایی بریزید تا خمیر بعد از میکس به دمای هدف برسد. کوکی و بیسکویت به دمای خمیر حساس‌اند: خمیر گرم‌تر یعنی گسترش و ضخامت و رطوبت پخت متفاوت.</p><h4>فرمول</h4><div class="eq">Σ m·cp·T + m<sub>w</sub>·cp<sub>w</sub>·T<sub>w</sub> + Q<sub>fric</sub> = DDT · (Σ m·cp + m<sub>w</sub>·cp<sub>w</sub>)<br>aw = x<sub>w</sub> · exp( −(Σ √K<sub>i</sub> · x<sub>i</sub>)² )</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">m, cp, T</b> — جرم (kg)، گرمای ویژه (kJ/kg·K) و دمای هر ماده</li><li><b dir="ltr">m_w, T_w</b> — آب افزوده و دمای آن؛ T_w مجهول است</li><li><b dir="ltr">Q_fric</b> — گرمای اصطکاک میکسر = توان × زمان × سهم تبدیل‌شده به گرما (kJ)</li><li><b dir="ltr">DDT</b> — دمای هدف خمیر</li><li><b dir="ltr">K</b> — ثابت Norrish: ساکارز 6.47 و گلوکز 2.25 (از حافظه، تقریبی)</li><li><b dir="ltr">x</b> — کسر مولی آب و قندها</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>دمای هر ماده را بگیرید، DDT را از دستور بردارید. اگر آب لازم از 0 کمتر شد، قسمتی از آب را یخ بریزید. در روش ساده: T_w = 3·DDT − (T_آرد + T_اتاق + اصطکاک) برای خمیر سه‌عامله.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">kg مواد</td><td class="t" style="white-space:normal">دستور بچ</td></tr><tr><td class="t">آب و قند و چربی هر ماده</td><td class="t" style="white-space:normal">برگهٔ مشخصات یا آزمایش (رطوبت در آون 105°C)</td></tr><tr><td class="t">cp</td><td class="t" style="white-space:normal">آرد حدود 1.8؛ شکر 1.25؛ چربی 2.0؛ آب 4.18 (تقریبی)</td></tr><tr><td class="t">دمای مواد</td><td class="t" style="white-space:normal">دماسنج لیزری هنگام توزین</td></tr><tr><td class="t">گرمای اصطکاک</td><td class="t" style="white-space:normal">یک بچ را بزنید، دمای واقعی خمیر را بخوانید و درصد را طوری عوض کنید که دمای محاسبه‌شده با واقعی بخواند</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: بچ 157 kg، رطوبت 17.8٪، aw ≈ 0.94، آب لازم 34°C برای DDT = 32°C. شکر ÷ آرد = 25٪ و چربی ÷ آرد = 15٪.</p><div class="note warn">aw خمیر برای مقایسهٔ دستورها است؛ aw محصول پخته را از آزمایشگاه یا ایزوترم بگیرید.</div></details><details class="g"><summary>پخت: افت وزن، انرژی و ارزش رطوبت</summary><h4>این چه کاری می‌کند؟</h4><p>جرم و انرژی پخت یک قطعه و ظرفیت فر را می‌دهد. مهم‌ترین نتیجه: هر درصد رطوبت بیشتر در خروج فر، آبی است که به قیمت محصول فروخته می‌شود، اما ماندگاری و تردی را کم می‌کند.</p><h4>فرمول</h4><div class="eq">ماده خشک ثابت: m<sub>f</sub> = m<sub>s</sub>·(1−افت) / (1 − x<sub>f</sub>)<br>Q = m<sub>evap</sub>·(4.18·(100−T<sub>0</sub>) + 2257) + m<sub>f</sub>·cp·(T<sub>f</sub> − T<sub>0</sub>)<br>pcs/min = سرعت / pitch × تعداد در عرض</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">m_s</b> — ماده جامد خمیر = وزن خمیر × (1 − رطوبت)</li><li><b dir="ltr">x_f</b> — رطوبت محصول در خروج فر</li><li><b dir="ltr">2257</b> — گرمای نهان تبخیر آب (kJ/kg)</li><li><b dir="ltr">pitch</b> — فاصلهٔ مرکز به مرکز ردیف قطعه روی نوار</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>وزن خمیر و وزن محصول را بعد از فر (همان لحظه) با ترازو بسنجید؛ تفاوت = افت. بعد رطوبت آن را با رطوبت‌سنج بگیرید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">رطوبت خمیر و محصول</td><td class="t" style="white-space:normal">رطوبت‌سنج هالوژنی یا آون 105°C؛ نمونه‌های پشت‌سرهم</td></tr><tr><td class="t">سرعت و طول فر</td><td class="t" style="white-space:normal">پلاک فر، نمایشگر خط</td></tr><tr><td class="t">توان ورودی فر</td><td class="t" style="white-space:normal">کنتور گاز: m³/h × ارزش حرارتی (حدود 9.3 kWh/m³ برای گاز شهری، تقریبی) یا کنتور برق</td></tr><tr><td class="t">افت مواد جامد</td><td class="t" style="white-space:normal">حدود 0.3 تا 1٪ (CO₂، آمونیاک)؛ با توزین دقیق اندازه بگیرید</td></tr></tbody></table></div><h4>مثال عددی</h4><p>خمیر 10 g با رطوبت 18٪ به 2.5٪ ⇒ محصول 8.37 g (افت 16.3٪)، 1.59 g آب تبخیر، 5.3 kJ برای هر قطعه. هر 1 واحد رطوبت نهایی ≈ 8.7 kg محصول در هر تُن خمیر. برای 8 g در بسته با 0.5٪ افت بعد از فر ⇒ خمیر 9.61 g.</p><div class="note warn">انرژی نظری فقط تبخیر و گرمای محصول است؛ اتلاف دیواره و دودکش در آن نیست، پس بازده واقعی را با توان ورودی مقایسه کنید.</div></details><details class="g"><summary>کیک: نسبت‌ها، گاز، قالب</summary><h4>این چه کاری می‌کند؟</h4><p>ترکیب کیک را با قاعده‌های سرانگشتی می‌سنجد، گاز حاصل از جوش‌شیرین و ماده اسیدی را حساب می‌کند و می‌گوید چند گرم خمیر هر قالب بریزید.</p><h4>فرمول</h4><div class="eq">CO₂ = min(سودا, اسید·NV/100) · 44.01/84.01 + سودای اضافی · 0.5 · 44.01/84.01<br>خمیر لازم = V<sub>قالب</sub> · سطح پرشدگی / ( SV · (1 − افت پخت) )</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">NV</b> — ارزش خنثی‌سازی: g جوش‌شیرین که 100 g اسید خنثی می‌کند؛ SAPP حدود 72، کِرِم تارتار حدود 45، MCP حدود 80 (از حافظه، از برگهٔ تأمین‌کننده بگیرید)</li><li><b dir="ltr">SV</b> — حجم مخصوص کیک پخته (mL/g)</li><li><b dir="ltr">چگالی خمیر</b> — وزن یک لیوان مدرج پر از خمیر ÷ حجم (g/mL)</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>چگالی خمیر را با ظرف مدرج و ترازو بسنجید؛ یک کیک آزمایشی را بپزید و حجمش را (با دانه‌های ارزن یا کولیس) بسنجید تا SV واقعی به دست آید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">دستور</td><td class="t" style="white-space:normal">g هر ماده</td></tr><tr><td class="t">رطوبت مواد</td><td class="t" style="white-space:normal">آرد 14٪، تخم‌مرغ 75٪، شیر 87٪ (تقریبی)</td></tr><tr><td class="t">NV</td><td class="t" style="white-space:normal">برگهٔ فنی ماده اسیدی</td></tr><tr><td class="t">حجم قالب</td><td class="t" style="white-space:normal">پر کردن قالب با آب و اندازه‌گیری با ظرف مدرج</td></tr><tr><td class="t">رطوبت کیک پخته</td><td class="t" style="white-space:normal">رطوبت‌سنج، معمولاً 20 تا 30٪</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: خمیر 410 g، افت پخت 12.5٪، CO₂ = 0.47 g، حجم خمیر 46٪ قالب 1 L ⇒ 439 g در هر قالب.</p><div class="note warn">قاعده‌های نسبت (شکر ≥ آرد، مایع ≥ شکر، تخم‌مرغ ≥ چربی) برای کیک پرنسبت‌اند و استثنا دارند. CO₂ فقط شاخص مقایسه است.</div></details><details class="g"><summary>ویفر: ورقه، ساندویچ و وزن</summary><h4>این چه کاری می‌کند؟</h4><p>از خمیر هر صفحهٔ فر تا بار پایانی: وزن ورقه، آب تبخیرشده و توان لازم، سهم کرم، ضایعات برش، هزینهٔ هر بار و مقدار کرم لازم در هر لایه برای ایمن‌ماندن وزن.</p><h4>فرمول</h4><div class="eq">ورقه = خمیر · جامد% / (1 − رطوبت ورقه)<br>بلوک = n·ورقه + (n−1)·کرم<br>بار = بلوک · A<sub>بار</sub> / A<sub>صفحه</sub><br>هدف = اعلامی + z·SD</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">n</b> — تعداد ورقه (لایهٔ کرم = n−1)</li><li><b dir="ltr">A</b> — مساحت بار و صفحه</li><li><b dir="ltr">z</b> — 1.645 / 2.33 / 3.09 برای 1 از 20 / 100 / 1000</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>چند ورقه و کرم را جداگانه توزین کنید؛ SD وزن را از 50 بار متوالی بعد از برش بگیرید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">خمیر و ورقه</td><td class="t" style="white-space:normal">توزین چند صفحه قبل و بعد پخت</td></tr><tr><td class="t">ماده جامد خمیر</td><td class="t" style="white-space:normal">رطوبت‌سنج روی خمیر</td></tr><tr><td class="t">زمان سیکل و تعداد صفحه</td><td class="t" style="white-space:normal">پلاک فر ویفر</td></tr><tr><td class="t">کرم هر لایه</td><td class="t" style="white-space:normal">توزین رسوب کرم از نازل با چند نمونه</td></tr><tr><td class="t">قیمت‌ها</td><td class="t" style="white-space:normal">خرید</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: ورقه 25.3 g، بار 11.89 g، کرم 57.7٪، 16 بار از هر بلوک و ضایعات برش 20.5٪؛ برای وزن اعلامی 11 g با SD = 0.4 هدف 12.24 g است و کرم لازم 48.3 g در هر لایه.</p><div class="note warn">ضایعات برش با اندازهٔ صفحه و بار شما حساب می‌شود؛ ابعاد را با واقعیت برش خودتان تنظیم کنید.</div></details><details class="g"><summary>مهاجرت رطوبت بین لایه‌ها</summary><h4>این چه کاری می‌کند؟</h4><p>وقتی دو لایه با aw متفاوت کنار هم‌اند (ویفر و کرم، بیسکویت و مربا، کیک و روکش)، آب می‌رود تا aw یکی شود. ابزار حالت نهایی را می‌دهد و می‌گوید لایهٔ ترد چقدر آب می‌گیرد.</p><h4>فرمول</h4><div class="eq">M<sub>i</sub>(aw) = M<sub>1</sub> + (aw − aw<sub>1</sub>)·(M<sub>2</sub> − M<sub>1</sub>)/(aw<sub>2</sub> − aw<sub>1</sub>)<br>Σ s<sub>i</sub>·M<sub>i</sub>(aw) = Σ آب اولیه</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">M</b> — رطوبت بر پایهٔ خشک (g آب / g ماده جامد)</li><li><b dir="ltr">s</b> — ماده جامد هر لایه</li><li><b dir="ltr">aw1, aw2</b> — دو رطوبت نسبی که نمونه را در آن‌ها تعادل داده‌اید</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>نمونهٔ هر لایه را جداگانه در دو دسیکاتور (مثلاً با محلول اشباع نمک MgCl₂ حدود aw 0.33 و NaCl حدود 0.75، ارقام تقریبی) تا وزن ثابت نگه دارید و رطوبت را بخوانید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">جرم هر لایه</td><td class="t" style="white-space:normal">ترازو</td></tr><tr><td class="t">رطوبت فعلی</td><td class="t" style="white-space:normal">رطوبت‌سنج</td></tr><tr><td class="t">دو نقطهٔ ایزوترم</td><td class="t" style="white-space:normal">آزمایش بالا یا برازش GAB در صفحهٔ «برازش مدل»</td></tr><tr><td class="t">aw بحرانی</td><td class="t" style="white-space:normal">نمونه را در رطوبت‌های مختلف نگه دارید و تا جایی که پانل حسی تردی را می‌پذیرد aw را ثبت کنید</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: ویفر (aw ≈ 0.18، رطوبت 2٪) و کرم (aw ≈ 0.28، رطوبت 1٪) ⇒ aw تعادلی 0.21؛ ویفر به 2.41٪ می‌رسد و 0.05 g آب از کرم به آن می‌رود.</p><div class="note warn">فقط حالت پایانی را می‌دهد؛ زمان رسیدن به آن با لایهٔ مانع (چربی/شکلات) بسیار طولانی‌تر می‌شود و باید جداگانه اندازه گرفته شود.</div></details><details class="g"><summary>زمان پخت از دمای مرکز</summary><h4>این چه کاری می‌کند؟</h4><p>معادلهٔ هدایت گرما در ورقه را حل می‌کند و زمان رسیدن مرکز به دمای هدف را می‌دهد. با داده‌های ترموکوپل، ضریب h و هدایت k را از خود فر شما برازش می‌کند و بعد برای ضخامت و دمای دیگر پیش‌بینی می‌کند.</p><h4>فرمول</h4><div class="eq">ρ·cp<sub>app</sub>·∂T/∂t = k·∂²T/∂x²<br>−k·∂T/∂x = h·(T − T<sub>air</sub>) در سطح<br>cp<sub>app</sub> = cp + L·x<sub>ev</sub>/ΔT در 85 تا 100°C</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">h</b> — ضریب انتقال گرما از فر به محصول (W/m²K)</li><li><b dir="ltr">k</b> — هدایت (W/mK)؛ کیک حدود 0.1 تا 0.4 (تقریبی)</li><li><b dir="ltr">x_ev</b> — آب تبخیرشده به ازای kg محصول؛ دمای مرکز را حدود 100°C نگه می‌دارد</li><li><b dir="ltr">Bi</b> — h·L/k؛ بزرگ یعنی مقاومت داخل محصول مهم است</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>ترموکوپل را در مرکز بگذارید و هر 1 تا 2 دقیقه دما را بخوانید؛ همان برنامهٔ فر را وارد کنید. چند آزمایش با ضخامت‌های مختلف اعتبار برازش را بیشتر می‌کند.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">ضخامت</td><td class="t" style="white-space:normal">کولیس</td></tr><tr><td class="t">چگالی</td><td class="t" style="white-space:normal">جرم پخته ÷ حجم</td></tr><tr><td class="t">برنامهٔ فر</td><td class="t" style="white-space:normal">ثبت دمای ناحیه‌ها</td></tr><tr><td class="t">داده مرکز</td><td class="t" style="white-space:normal">ترموکوپل نوع K با دیتالاگر</td></tr></tbody></table></div><h4>مثال عددی</h4><p>نمونه: کیک 30 mm یک‌طرفه با h = 50 در 180°C، مرکز در حدود 39 دقیقه به 96°C می‌رسد؛ ضخامت 10٪ بیشتر یا دمای 20°C کمتر در جدول سناریو نشان داده می‌شود.</p><div class="note warn">مدل ناحیهٔ همگن است و پوسته و انبساط را نمی‌بیند. برای طراحی نهایی با داده‌های واقعی برازش کنید و RMSE بالای 3°C را جدی بگیرید.</div></details><details class="g"><summary>کنترل کیفیت: گسترش کوکی و بخشش وزن</summary><h4>این چه کاری می‌کند؟</h4><p>ضریب گسترش کوکی را از چند آزمون با آماره و بازهٔ اطمینان می‌دهد، و از وزن چند ده بسته هدف میانگین بهینه و ارزش سالانهٔ بخشش را حساب می‌کند.</p><h4>فرمول</h4><div class="eq">spread = (D = (W1+W2)/12) / (T/6)<br>هدف میانگین = وزن اعلامی + z·SD</div><h4>اجزای فرمول</h4><ul><li><b dir="ltr">W1, W2</b> — عرض شش کوکی کنار هم و بعد از چرخش 90 درجه</li><li><b dir="ltr">T</b> — ارتفاع شش کوکی روی هم</li><li><b dir="ltr">SD</b> — انحراف معیار وزن بسته‌ها</li></ul><h4>ساده‌ترین راه انجام دستی</h4><p>برای وزن: 50 بستهٔ پشت‌سرهم را روی ترازوی تأییدشده وزن کنید؛ برای ضریب گسترش: برای هر بچ آرد یک بار آزمون را اجرا کنید.</p><h4>ورودی‌ها را از کجا بیاورم؟</h4><div class="tw"><table class="gt"><thead><tr><th class="t">ورودی</th><th class="t">از کجا و چطور</th></tr></thead><tbody><tr><td class="t">داده ضریب گسترش</td><td class="t" style="white-space:normal">کولیس یا خط‌کش و کوکی‌های ردیف شده</td></tr><tr><td class="t">حدود پذیرش</td><td class="t" style="white-space:normal">مشخصهٔ محصول یا مشتری</td></tr><tr><td class="t">وزن بسته‌ها</td><td class="t" style="white-space:normal">ترازوی چک‌ویر یا ترازوی آزمایشگاه</td></tr><tr><td class="t">قیمت و تولید سالانه</td><td class="t" style="white-space:normal">مالی</td></tr></tbody></table></div><h4>مثال عددی</h4><p>ضریب بچ‌های نمونه 7.5، 6.7، 7.2 و 8.4 ⇒ بچ B زیر حد 7 است. برای وزن، اگر SD = 4 g و ریسک 1 از 1000 باشد، هدف 400 + 3.09×4 = 412.4 g است.</p><div class="note warn">مقررات وزن بسته (مثلاً میانگین و خطای منفی مجاز) را از استاندارد ملی خودتان بگیرید.</div></details></section>
+</main>
+<footer>این ابزارها در مرورگر شما اجرا می‌شوند و هیچ داده‌ای به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</footer>
+<script src="engine.js"></script>
+<script src="ui.js"></script>
+<script src="bakery.js"></script>
+
+</body></html>

@@ -321,5 +321,168 @@ E.parseTable = function (txt) {
     });
   return out;
 };
+// ---------------------------------------------------------------- bakery
+var MW_SUC = 342.3, MW_GLU = 180.16, MW_W = 18.015;
+// Norrish water activity: aw = x_w * exp(-(sum sqrt(K_i) x_i)^2), K sucrose 6.47, glucose-type 2.25 (masses in g)
+E.norrish = function (water, suc, glu) {
+  var nw = water / MW_W, ns = suc / MW_SUC, ng = glu / MW_GLU, n = nw + ns + ng;
+  if (!(nw > 0)) return 0;
+  var s = Math.sqrt(6.47) * ns / n + Math.sqrt(2.25) * ng / n;
+  return nw / n * Math.exp(-s * s);
+};
+// dough balance + dough temperature. rows: {m kg, w %, suc %, glu %, fat %, cp kJ/kg/K, T C}; first row = flour.
+// o: {water kg, cpw, ddt, fric kJ, tmin}
+E.dough = function (rows, o) {
+  var cpw = o.cpw || 4.18, M = 0, W = 0, suc = 0, glu = 0, fat = 0, mc = 0, mcT = 0, i, r;
+  for (i = 0; i < rows.length; i++) { r = rows[i]; M += r.m; W += r.m * r.w / 100; suc += r.m * r.suc / 100; glu += r.m * r.glu / 100; fat += r.m * r.fat / 100; mc += r.m * r.cp; mcT += r.m * r.cp * r.T; }
+  var Wadd = o.water || 0; M += Wadd; W += Wadd;
+  var flour = rows[0] ? rows[0].m : 0, aq = W + suc + glu;
+  var A = o.ddt * (mc + Wadd * cpw) - mcT - (o.fric || 0), Tw = Wadd > 0 ? A / (Wadd * cpw) : NaN, tmin = o.tmin == null ? 2 : o.tmin, ice = 0, Tliq = Tw;
+  if (Wadd > 0 && Tw < tmin) { ice = (Wadd * cpw * tmin - A) / (cpw * tmin + 334); ice = Math.max(0, Math.min(Wadd, ice)); Tliq = tmin; }
+  return { M: M, W: W, moist: 100 * W / M, suc: suc, glu: glu, fat: fat, fatPct: 100 * fat / M, sucPct: 100 * suc / M, sugarFlour: flour ? 100 * (suc + glu) / flour : NaN, fatFlour: flour ? 100 * fat / flour : NaN, waterFlour: flour ? 100 * W / flour : NaN, addFlour: flour ? 100 * Wadd / flour : NaN, aw: E.norrish(W, suc, glu), syrup: aq > 0 ? 100 * (suc + glu) / aq : 0, cp: (mc + Wadd * cpw) / M, Tw: Tw, Tliq: Tliq, ice: ice };
+};
+// bake mass and energy balance for one piece (g) and a band oven
+E.bake = function (o) {
+  var d = o.dough, m0 = o.m0 / 100, mf = o.mf / 100, sl = (o.sl || 0) / 100;
+  var solids = d * (1 - m0), sf = solids * (1 - sl), fin = sf / (1 - mf), water0 = d * m0, wf = fin * mf, ev = water0 - wf;
+  var cpw = 4.18, L = 2257, T0 = o.T0, Tf = o.Tf, cp = o.cp || 2;
+  var eP = ev / 1000 * (cpw * (100 - T0) + L) + fin / 1000 * cp * (Tf - T0); // kJ per piece: evaporation + heating
+  var r = { fin: fin, ev: ev, loss: 100 * (d - fin) / d, kJ: eP, kWhPerTon: eP / (fin / 1e6) / 3600, perPct: null };
+  if (o.speed > 0 && o.pitch > 0 && o.across > 0) {
+    r.pcsMin = o.speed * 1000 / o.pitch * o.across; r.bakeMin = o.length / o.speed; r.kgH = r.pcsMin * fin * 60 / 1000; r.evapKgH = r.pcsMin * ev * 60 / 1000; r.kW = eP * r.pcsMin / 60;
+    if (o.inputKW > 0) r.eff = 100 * r.kW / o.inputKW;
+  }
+  // value of 1 point of final moisture per 1000 kg dough
+  function finOf(m) { return sf / (1 - m); }
+  r.perPct = (finOf(mf + 0.01) - finOf(mf)) / d * 1e6 / 1000; // kg product per 1000 kg dough (dough in g, product in g)
+  if (o.target > 0) { var tgt = o.target / (1 - (o.post || 0) / 100); r.doughNeeded = tgt * (1 - mf) / ((1 - m0) * (1 - sl)); r.tgtExit = tgt; }
+  return r;
+};
+// cake batter: grams
+E.cake = function (o) {
+  var fl = o.flour, su = o.sugar, fa = o.fat, eg = o.egg, li = o.liquid, ot = o.other || 0;
+  var wF = fl * 0.14, wFat = fa * (o.fatW || 0) / 100, wE = eg * (o.eggW == null ? 75 : o.eggW) / 100, wL = li * (o.liqW == null ? 87 : o.liqW) / 100, wO = ot * 0.04;
+  var M = fl + su + fa + eg + li + ot, W = wF + wFat + wE + wL + wO, S = M - W;
+  var mf = o.mf / 100, fin = S / (1 - mf), loss = 100 * (M - fin) / M, wfin = fin * mf;
+  var r = { M: M, W: W, moist: 100 * W / M, fin: fin, loss: loss, sugarFlour: 100 * su / fl, liqSugar: 100 * (li + eg) / su, eggFat: fa > 0 ? 100 * eg / fa : NaN, fatFlour: 100 * fa / fl, awBatter: E.norrish(W, su, 0), awCake: E.norrish(wfin, su, 0), syrupBatter: 100 * su / (su + W), syrupCake: 100 * su / (su + wfin) };
+  // CO2 from leavening (grams)
+  var neut = (o.acid || 0) * (o.nv || 0) / 100, used = Math.min(o.soda || 0, neut), excess = Math.max(0, (o.soda || 0) - used);
+  r.co2 = used * 44.01 / 84.007 + excess * 0.5 * 44.01 / 84.007; r.excess = excess; r.acidLeft = Math.max(0, neut - (o.soda || 0)) * 100 / (o.nv || 100);
+  r.co2mL100 = r.co2 / 44.01 * 30.6 * 1000 / M * 100; // mL of CO2 at 100C per 100 g batter
+  if (o.pan > 0 && o.sg > 0) {
+    r.batterVol = M / o.sg; r.fill = 100 * r.batterVol / o.pan;
+    if (o.sv > 0) { r.needBatter = o.pan * (o.fillTarget || 1) / (o.sv * (1 - loss / 100)); r.needVol = r.needBatter / o.sg; r.needFill = 100 * r.needVol / o.pan; r.pans = M / r.needBatter; r.cakeVolNow = fin * o.sv; }
+  }
+  return r;
+};
+// wafer sheet + sandwich
+E.wafer = function (o) {
+  var sheet = o.batter * o.solids / 100 / (1 - o.sheetM / 100), ev = o.batter - sheet, plateA = o.pL * o.pW;
+  var r = { sheet: sheet, ev: ev, plateA: plateA };
+  r.kJcycle = ev / 1000 * (4.18 * (100 - o.T0) + 2257); r.kW = r.kJcycle * o.plates / o.cycle; r.sheetsH = o.plates * 3600 / o.cycle; r.sheetKgH = r.sheetsH * sheet / 1000; r.evapKgH = r.sheetsH * ev / 1000;
+  var n = o.n, lay = n - 1, block = n * sheet + lay * o.cream;
+  var c1 = Math.floor(o.pL / o.bL) * Math.floor(o.pW / o.bW), c2 = Math.floor(o.pL / o.bW) * Math.floor(o.pW / o.bL);
+  r.pieces = Math.max(c1, c2); r.block = block; r.barA = o.bL * o.bW;
+  r.bar = block * r.barA / plateA; r.creamPct = 100 * lay * o.cream / block; r.fatPct = o.creamFat * r.creamPct / 100;
+  r.trim = 100 * (1 - r.pieces * r.barA / plateA);
+  r.costBlock = (n * sheet * o.cSheet + lay * o.cream * o.cCream) / 1000; r.costBar = r.pieces > 0 ? r.costBlock / r.pieces : NaN;
+  if (o.declared > 0) { var z = E.normInv(1 - o.alpha), tgt = o.declared + z * o.sd; r.z = z; r.target = tgt; r.give = r.bar - o.declared; r.creamNeeded = lay > 0 ? (tgt / (r.barA / plateA) - n * sheet) / lay : NaN; r.pBelow = 100 * E.normCdf((o.declared - r.bar) / o.sd); }
+  return r;
+};
+// moisture migration, linear isotherm per component between two measured points (wet-basis %)
+E.migrate = function (cs) {
+  var den = 0, num = 0, W0 = 0, rows = cs.map(function (c) {
+    var s = c.m * (1 - c.wb / 100), db = function (w) { return w / (100 - w); };
+    var M1 = db(c.w1), M2 = db(c.w2), sl = (M2 - M1) / (c.a2 - c.a1), Mc = db(c.wb);
+    W0 += c.m * c.wb / 100; num += s * (M1 - sl * c.a1); den += s * sl;
+    return { s: s, M1: M1, sl: sl, a1: c.a1, a2: c.a2, Mc: Mc, awNow: sl > 0 ? c.a1 + (Mc - M1) / sl : NaN, m: c.m, wb: c.wb };
+  });
+  var aw = (W0 - num) / den;
+  rows.forEach(function (r) { r.M = r.M1 + r.sl * (aw - r.a1); r.wbF = 100 * r.M / (1 + r.M); r.dW = r.s * (r.M - r.Mc); r.out = aw < Math.min(r.a1, r.a2) - 1e-9 || aw > Math.max(r.a1, r.a2) + 1e-9; r.outNow = r.awNow < Math.min(r.a1, r.a2) - 1e-9 || r.awNow > Math.max(r.a1, r.a2) + 1e-9; });
+  return { aw: aw, rows: rows };
+};
+// 1-D slab conduction (implicit), convective boundary, optional apparent-cp latent bump.
+// o: {L m (full thickness), two (heated both faces), k, rho, cp J/kg/K, h, Tair (number or function(t)), T0, xev, Tev1, Tev2, N, dt, tmax, target}
+E.slab = function (o) {
+  var N = o.N || 30, dt = o.dt || 2, tmax = o.tmax || 7200, half = o.two ? o.L / 2 : o.L, dx = half / N, n = N + 1, i;
+  var T = []; for (i = 0; i < n; i++) T.push(o.T0);
+  var Ta = typeof o.Tair === 'function' ? o.Tair : function () { return o.Tair; };
+  var e1 = o.Tev1 == null ? 85 : o.Tev1, e2 = o.Tev2 == null ? 100 : o.Tev2, lat = (o.xev || 0) * 2.257e6 / Math.max(1e-6, e2 - e1);
+  function cpEff(t) { return o.cp + (t >= e1 && t <= e2 ? lat : 0); }
+  var ts = [0], Tc = [T[0]], Ts = [T[N]], tT = null, t = 0, a = new Array(n), b = new Array(n), c = new Array(n), d = new Array(n);
+  while (t < tmax - 1e-9) {
+    t += dt; var tair = Ta(t), vol;
+    for (i = 0; i < n; i++) {
+      var C = o.rho * cpEff(T[i]), w = (i === 0 || i === N) ? dx / 2 : dx, cap = C * w / dt;
+      a[i] = i > 0 ? -o.k / dx : 0; c[i] = i < N ? -o.k / dx : 0; b[i] = cap - a[i] - c[i]; d[i] = cap * T[i];
+      if (i === N) { b[i] += o.h; d[i] += o.h * tair; }
+    }
+    for (i = 1; i < n; i++) { var m = a[i] / b[i - 1]; b[i] -= m * c[i - 1]; d[i] -= m * d[i - 1]; }
+    T[N] = d[N] / b[N]; for (i = N - 1; i >= 0; i--) T[i] = (d[i] - c[i] * T[i + 1]) / b[i];
+    ts.push(t); Tc.push(T[0]); Ts.push(T[N]);
+    if (tT == null && o.target != null && T[0] >= o.target) { tT = t - dt + dt * (o.target - Tc[Tc.length - 2]) / (T[0] - Tc[Tc.length - 2]); if (o.stop) break; }
+  }
+  return { t: ts, Tc: Tc, Ts: Ts, tTarget: tT, T: T.slice(), dx: dx };
+};
+// fit h and k to measured center temperature [{t s, T C}]
+E.slabFit = function (data, o) {
+  function sse(h, k) { var r = E.slab({ L: o.L, two: o.two, k: k, rho: o.rho, cp: o.cp, h: h, Tair: o.Tair, T0: o.T0, xev: o.xev, N: 20, dt: 3, tmax: data[data.length - 1].t + 3 }), s = 0, j, tt = r.t, Tc = r.Tc;
+    data.forEach(function (p) { j = Math.min(Tc.length - 2, Math.max(0, Math.floor(p.t / 3))); var f = (p.t - tt[j]) / 3, y = Tc[j] + f * (Tc[j + 1] - Tc[j]); s += (y - p.T) * (y - p.T); }); return s; }
+  var res = E.nelderMead(function (p) { if (p[0] < 0 || p[0] > 8 || p[1] < -3.5 || p[1] > 1) return 1e12; return sse(Math.exp(p[0]), Math.exp(p[1])); }, [Math.log(o.h0 || 40), Math.log(o.k0 || 0.3)], { maxit: 600 });
+  var h = Math.exp(res.x[0]), k = Math.exp(res.x[1]);
+  return { h: h, k: k, rmse: Math.sqrt(res.f / data.length) };
+};
+
+// ---------------------------------------------------------------- beverages
+E.brixSG = function (b) { return 1 + b / (258.6 - (b / 258.2) * 227.1); }; // SG 20/20 from degrees Brix/Plato
+E.sgBrix = function (sg) { var lo = 0, hi = 90, i; for (i = 0; i < 60; i++) { var m = (lo + hi) / 2; if (E.brixSG(m) < sg) lo = m; else hi = m; } return (lo + hi) / 2; };
+E.rhoW = function (T) { return (999.83952 + 16.945176 * T - 7.9870401e-3 * T * T - 46.170461e-6 * T * T * T + 105.56302e-9 * Math.pow(T, 4) - 280.54253e-12 * Math.pow(T, 5)) / (1 + 16.87985e-3 * T); }; // kg/m3, Kell
+E.rhoBev = function (B, T) { T = T == null ? 20 : T; return E.brixSG(B) * 998.203 * E.rhoW(T) / E.rhoW(20); }; // kg/m3, approximate temperature scaling
+// syrup + water batch. o: {V L finished at 20C, Bt, Bs, cs price/kg optional}
+E.syrup = function (o) {
+  var rb = E.rhoBev(o.Bt), M = o.V * rb / 1000, Ms = M * o.Bt / 100, sy = Ms / (o.Bs / 100), w = M - sy, rs = E.rhoBev(o.Bs);
+  var Vsy = sy / rs * 1000, Vw = w / 0.998203; // L
+  return { M: M, sugar: Ms, syrup: sy, water: w, Vsyrup: Vsy, Vwater: Vw, ratio: Vw / Vsy, rhoB: rb, rhoS: rs, contraction: 100 * (Vsy + Vw - o.V) / o.V };
+};
+// correct an off-spec tank: M kg at Bc -> target Bt; syrup Bs
+E.correct = function (M, Bc, Bt, Bs) {
+  if (Bc > Bt) return { add: 'water', kg: M * (Bc - Bt) / Bt };
+  if (Bc < Bt) return { add: 'syrup', kg: M * (Bt - Bc) / (Bs - Bt) };
+  return { add: 'none', kg: 0 };
+};
+// CO2: gauge psi from T (C) and volumes V (brewing correlation, water/beer); inverse by bisection
+E.co2P = function (Tc, V) { var T = Tc * 9 / 5 + 32; return -16.6999 - 0.0101059 * T + 0.00116512 * T * T + 0.173354 * T * V + 4.24267 * V - 0.0684226 * V * V; };
+E.co2V = function (Tc, Ppsi) { var lo = 0, hi = 8, i; for (i = 0; i < 70; i++) { var m = (lo + hi) / 2; if (E.co2P(Tc, m) < Ppsi) lo = m; else hi = m; } return (lo + hi) / 2; };
+// Langelier index. ca, alk mg/L as CaCO3, tds mg/L
+E.lsi = function (o) {
+  var A = (Math.log(o.tds) / Math.LN10 - 1) / 10, B = -13.12 * Math.log(o.T + 273) / Math.LN10 + 34.55, C = Math.log(o.ca) / Math.LN10 - 0.4, D = Math.log(o.alk) / Math.LN10, pHs = 9.3 + A + B - (C + D);
+  return { pHs: pHs, lsi: o.pH - pHs, rsi: 2 * pHs - o.pH };
+};
+// RO: Q feed, Y recovery (0-1), R rejection (0-1), ions as object of mg/L
+E.ro = function (Q, Y, R, ions) {
+  var cf = Math.log(1 / (1 - Y)) / Y, Qp = Q * Y, Qc = Q - Qp, P = {}, C = {};
+  Object.keys(ions).forEach(function (k) { P[k] = (1 - R) * ions[k] * cf; C[k] = (ions[k] - Y * P[k]) / (1 - Y); });
+  return { Qp: Qp, Qc: Qc, perm: P, conc: C, cfAvg: cf };
+};
+// acid-base: acids [{c mol/L, pk:[...]}], cat mol/L strong cation, an mol/L strong anion
+E.acidCharge = function (pH, pk) {
+  var n = pk.length, h = Math.pow(10, -pH), T = [], k, j, s = 0, q = 0, t;
+  for (k = 0; k <= n; k++) { t = Math.pow(h, n - k); for (j = 0; j < k; j++) t *= Math.pow(10, -pk[j]); T.push(t); s += t; q += k * t; }
+  return q / s;
+};
+E.chargeF = function (pH, sp) { var h = Math.pow(10, -pH), f = (sp.cat || 0) + h - (sp.an || 0) - 1e-14 / h; (sp.acids || []).forEach(function (a) { f -= a.c * E.acidCharge(pH, a.pk); }); return f; };
+E.phSolve = function (sp) { var lo = 0, hi = 14, i; for (i = 0; i < 80; i++) { var m = (lo + hi) / 2; if (E.chargeF(m, sp) > 0) lo = m; else hi = m; } return (lo + hi) / 2; };
+E.baseTo = function (sp, pH) { return Math.max(0, -E.chargeF(pH, sp)); }; // mol/L of strong base to reach pH
+E.undis = function (pH, pk) { return 1 / (1 + Math.pow(10, pH - pk)); };
+E.pvw = function (T) { return Math.pow(10, 8.07131 - 1730.63 / (233.426 + T)) * 0.133322; }; // kPa, Antoine 1-100C
+// fill, thermal contraction and headspace vacuum. o: {Vdec mL at 20C, B, Tfill, Vb brimful mL, T2, SD, alpha}
+E.fill = function (o) {
+  var r20 = E.rhoBev(o.B, 20), m = o.Vdec * r20 / 1000, rT = E.rhoBev(o.B, o.Tfill), VT = m / rT * 1000, Vh1 = o.Vb - VT, Vh2 = o.Vb - o.Vdec, T1 = o.Tfill + 273.15, T2 = (o.T2 == null ? 20 : o.T2) + 273.15;
+  var pa1 = 101.325 - E.pvw(o.Tfill), pa2 = pa1 * (Vh1 / Vh2) * (T2 / T1), tot = pa2 + E.pvw(o.T2 == null ? 20 : o.T2);
+  var r = { m: m, VT: VT, expansion: 100 * (VT / o.Vdec - 1), Vh1: Vh1, Vh2: Vh2, hs1: 100 * Vh1 / o.Vb, hs2: 100 * Vh2 / o.Vb, vac: 101.325 - tot, pv: E.pvw(o.Tfill) };
+  if (o.SD > 0) { var z = E.normInv(1 - o.alpha); r.z = z; r.targetV = o.Vdec + z * o.SD; r.targetM = r.targetV * r20 / 1000; r.targetVT = r.targetM / rT * 1000; }
+  return r;
+};
+
 return E;
 });
