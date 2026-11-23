@@ -177,6 +177,5 @@ select option{background:var(--card);color:var(--ink)}
 body{background:var(--bg) url(bg-light.svg) 0 0/300px 300px}
 @media(prefers-color-scheme:dark){body{background:var(--bg) url(bg-dark.svg) 0 0/300px 300px}}
 .auth-side{background-image:url(bg-white.svg),linear-gradient(160deg,var(--navy),#0f766e);background-size:300px 300px,auto}
-.ft{background-image:url(bg-white.svg);background-size:300px 300px}
 @media print{body{background:#fff}}
 [hidden]{display:none!important}
