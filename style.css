@@ -172,3 +172,11 @@ select option{background:var(--card);color:var(--ink)}
 .sv-it table{border-collapse:collapse;width:100%;font-size:13px;margin:6px 0}.sv-it td,.sv-it th{border-bottom:1px solid var(--line);padding:4px 8px;text-align:right}
 @media print{.xbar,.toast,.noprint{display:none!important}}
 @media(prefers-color-scheme:dark){button.pri,.step b.n,.steps>div::before{color:#04201d}}
+
+/* ===== v2.2: subtle food-engineering pattern (content stays on solid cards) ===== */
+body{background:var(--bg) url(bg-light.svg) 0 0/300px 300px}
+@media(prefers-color-scheme:dark){body{background:var(--bg) url(bg-dark.svg) 0 0/300px 300px}}
+.auth-side{background-image:url(bg-white.svg),linear-gradient(160deg,var(--navy),#0f766e);background-size:300px 300px,auto}
+.ft{background-image:url(bg-white.svg);background-size:300px 300px}
+@media print{body{background:#fff}}
+[hidden]{display:none!important}
