@@ -151,3 +151,24 @@ input.rtl{direction:rtl;text-align:right}
 .chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--mut)}.chk input{margin-top:7px}
 .pw{position:relative}.pw input{padding-left:64px}.pw button{position:absolute;left:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--pri2);font-size:12.5px;padding:4px 8px}
 button[disabled],.btn[disabled]{opacity:.55;cursor:not-allowed}
+
+/* ===== v2.1: dark-mode fix + new features ===== */
+:root{color-scheme:light}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#10151b}}
+select option{background:var(--card);color:var(--ink)}
+::placeholder{color:var(--mut);opacity:.85}
+.xbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.xbar b{color:var(--mut);font-size:13px;margin-inline-end:4px}
+.xsave{display:flex;gap:8px;flex:1 1 280px}.xsave input{flex:1}
+.toast{position:fixed;inset-inline:0;bottom:22px;margin:auto;width:max-content;max-width:90vw;background:var(--navy);color:#fff;padding:10px 18px;border-radius:12px;box-shadow:var(--shadow);z-index:80}
+.ut{width:100%;border-collapse:collapse}.ut td{padding:8px 10px;border-bottom:1px solid var(--line)}
+.ut td:nth-child(2){direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;font-size:14px}.ut tr.src td{background:var(--pri-soft)}
+.gl{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:10px 0}
+.gl:target{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.gl h3{margin:0 0 4px;font-size:16px}.gl h3 small{font:600 12px system-ui,sans-serif;color:var(--mut);direction:ltr;unicode-bidi:embed;margin-inline-start:8px}
+.gl p{margin:4px 0;color:var(--ink)}.gl .rel{font-size:13px;color:var(--mut)}
+.sv-it{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:10px 0}
+.sv-it h3{margin:0;font-size:16px}.sv-it .meta{color:var(--mut);font-size:13px}.sv-it details{margin-top:8px}
+.sv-it table{border-collapse:collapse;width:100%;font-size:13px;margin:6px 0}.sv-it td,.sv-it th{border-bottom:1px solid var(--line);padding:4px 8px;text-align:right}
+@media print{.xbar,.toast,.noprint{display:none!important}}
+@media(prefers-color-scheme:dark){button.pri,.step b.n,.steps>div::before{color:#04201d}}
