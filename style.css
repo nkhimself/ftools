@@ -179,3 +179,12 @@ body{background:var(--bg) url(bg-light.svg) 0 0/300px 300px}
 .auth-side{background-image:url(bg-white.svg),linear-gradient(160deg,var(--navy),#0f766e);background-size:300px 300px,auto}
 @media print{body{background:#fff}}
 [hidden]{display:none!important}
+
+/* ===== v2.3: footer color (soft theme tint, no images), bigger footer logo, bar cells ===== */
+.ft{background:var(--pri-soft);color:var(--ink);border-top:3px solid var(--pri);background-image:none}
+.ft a{color:var(--pri2)}.ft .brand{color:var(--ink)}.ft h4{color:var(--ink)}
+.ft .mot{color:var(--ink);font-size:16px;font-weight:700}
+.ft .fb{border-top:1px solid var(--line);color:var(--mut)}
+.fbrand img{width:76px;height:76px}.fbrand b{font-size:26px}.fbrand small{font-size:12px}
+.bar{background:var(--line);height:8px;border-radius:4px;min-width:90px}.bar i{display:block;height:100%;background:var(--pri);border-radius:4px}
+tr.tot td{border-top:2px solid var(--line)}
