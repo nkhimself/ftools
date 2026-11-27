@@ -1,19 +1,19 @@
-/* Header dropdown menus: open on hover (mouse) or click/tap, close on outside click or Escape. */
+/* Main navigation dropdowns: hover (mouse), click/tap, Esc, outside click. No storage, no network. */
 (function () {
   'use strict';
-  var groups = Array.prototype.slice.call(document.querySelectorAll('header.top details.dd'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.mainnav details.dd'));
   if (!groups.length) return;
-  var canHover = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var hover = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   function closeAll(except) { groups.forEach(function (g) { if (g !== except) g.removeAttribute('open'); }); }
   groups.forEach(function (g) {
+    var s = g.querySelector('summary');
     g.addEventListener('toggle', function () { if (g.open) closeAll(g); });
-    if (canHover) {
-      // With a mouse the menu is already open from hover; a click must not toggle it shut.
-      g.querySelector('summary').addEventListener('click', function (e) { e.preventDefault(); closeAll(g); g.setAttribute('open', ''); });
+    if (hover) {
       g.addEventListener('mouseenter', function () { closeAll(g); g.setAttribute('open', ''); });
       g.addEventListener('mouseleave', function () { g.removeAttribute('open'); });
+      s.addEventListener('click', function (e) { e.preventDefault(); closeAll(g); g.setAttribute('open', ''); });
     }
   });
-  document.addEventListener('click', function (e) { if (!e.target.closest('header.top details.dd')) closeAll(); });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.mainnav details.dd')) closeAll(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
 })();

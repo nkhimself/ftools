@@ -60,7 +60,7 @@
   }
   var bar = document.createElement('div'); bar.className = 'xbar noprint';
   bar.innerHTML = '<b>خروجی</b><button type="button" data-x="save">ذخیره نتیجه</button><button type="button" data-x="print">چاپ / PDF</button><button type="button" data-x="csv">CSV</button><button type="button" data-x="copy">کپی متن</button><a class="btn ghost" href="results.html">نتایج ذخیره‌شده</a><span class="xsave" hidden><input type="text" class="rtl" maxlength="80" aria-label="عنوان"><button type="button" class="pri xok" data-x="ok">ذخیره</button></span>';
-  var anchor = main.querySelector('.tabs') || main.querySelector('.card'); if (!anchor) return;
+  var anchor = main.querySelector('[data-xbar-before]') || main.querySelector('.tabs') || main.querySelector('.card'); if (!anchor) return;
   anchor.parentNode.insertBefore(bar, anchor);
   var box = bar.querySelector('.xsave'), ti = box.querySelector('input');
   bar.addEventListener('click', function (e) {

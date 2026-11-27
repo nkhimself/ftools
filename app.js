@@ -46,7 +46,7 @@
     if (e.key === '/' && t !== 'input' && t !== 'textarea' && t !== 'select') { var q = document.querySelector('.qin'); if (q) { e.preventDefault(); q.focus(); } }
   });
   function deep() {
-    var m = /^#tab-(\w+)$/.exec(location.hash); if (!m) return;
+    var m = /^#tab-([\w-]+)$/.exec(location.hash); if (!m) return;
     var b = document.querySelector('[data-tab="' + m[1] + '"]');
     if (b) { b.click(); var t = b.parentNode; if (t && t.scrollIntoView) t.scrollIntoView(); }
   }

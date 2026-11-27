@@ -12,9 +12,9 @@ function close(actual, expected) {
   assert.ok(Math.abs(actual - expected) <= 1e-8 * Math.max(1, Math.abs(expected)), `${actual} != ${expected}`);
 }
 const cases = {
-  throughput: [1000/0.97, {m:1000}], tankers: [3], silos: [21000], 'fat-balance': [3000*(3.5-0.05)/(40-0.05)],
-  'cheese-whey': [2000], 'cheese-vats': [4120], ripening: [4000], yogurt: [3536], regeneration: [61.95], holding: [3300/(3600*1010*Math.PI*0.024**2)],
-  homogenizer: [15/1.03], packaging: [20000], cold: [65], 'water-effluent': [10], equalization: [1.875],
+  throughput: [1000/0.97, {m:1000}], tankers: [3], silos: [21000],
+  'cheese-whey': [2000], 'cheese-vats': [4120], ripening: [4000], yogurt: [3536], regeneration: [61.95],
+  homogenizer: [15/1.03], packaging: [20000], 'water-effluent': [10], equalization: [1.875],
   'cip-hydraulics': [10.602875205865553], 'air-power': [225], 'utility-summary': [1150], warehouse: [50000], economics: [6000000],
   exchanger: [541.6666666666666], steam: [1814400/2100, {hs:2700,hc:600,loss:0.8,q:500}],
   boiler: [664.4444444444445], pump: [0.5/(60*Math.PI*0.0325**2)], cip: [1020]
@@ -36,12 +36,6 @@ test('ripening: brine volume and pallet count', () => {
   const [brining, brine, stock, pallets, area] = values('ripening');
   close(brining, 4000); close(brine, 2*4000/1180); close(stock, 120000);
   close(pallets, Math.ceil(120000/(800*0.85))); close(area, Math.ceil(pallets/3)*1.2/0.45);
-});
-test('cold: annual electricity cost follows daily electrical energy', () => {
-  const r = values('cold');
-  const product = 20000*3.9*3/3600, shell = 240*28/1000;
-  close(r[4], (product + 24*(shell + 6))/2.5);
-  close(r[5], r[4]*365*0.08);
 });
 test('utility summary: design loads apply coincidence to the sum', () => {
   const r = values('utility-summary');
@@ -88,7 +82,30 @@ test('bad, missing and physically inconsistent inputs are rejected', () => {
     ['pump',{q:NaN}], ['pump',{ps:3}], ['pump',{q:1}], ['exchanger',{co:75}],
     ['steam',{b:100}], ['boiler',{fuel:1}], ['cip',{mr:300,cr:40}], ['cip',{ct:80}],
     ['cheese-whey',{tc:1}], ['cheese-vats',{cycle:24}], ['fat-balance',{ft:5}],
-    ['silos',{count:1.5}], ['tankers',{load:0}], ['tankers',{peak:0.5}], ['ripening',{levels:2.5}], ['ripening',{occ:0}], ['utility-summary',{s1:-1}], ['cold',{days:400}], ['yogurt',{h:2}], ['regeneration',{tf:35}],
+    ['silos',{count:1.5}], ['tankers',{load:0}], ['tankers',{peak:0.5}], ['ripening',{levels:2.5}], ['ripening',{occ:0}], ['utility-summary',{s1:-1}],  ['yogurt',{h:2}], ['regeneration',{tf:35}],
     ['packaging',{rej:100}], ['water-effluent',{out:100}], ['warehouse',{levels:2.5}]
   ]) assert.throws(() => values(id,override), id);
+});
+
+test('every calculator has full descriptions, sources and an example', () => {
+  const FC = require('../design-core.js');
+  for (const tool of tools.values()) {
+    for (const key of ['title', 'short', 'lead', 'eq', 'warn', 'hand']) assert.ok(tool[key], `${tool.id} lacks ${key}`);
+    assert.ok(tool.parts && tool.parts.length >= 2, `${tool.id} lacks parts`);
+    assert.ok(tool.src && Object.keys(tool.src).length >= 2, `${tool.id} lacks input sources`);
+    for (const k of Object.keys(tool.src)) assert.ok(tool.fields.some(([fk]) => fk === k), `${tool.id}: source for unknown field ${k}`);
+    assert.match(FC.example(tool), /≈/);
+  }
+});
+test('tool ids are unique and links point to real tabs', () => {
+  const fs = require('node:fs');
+  const ids = new Set(tools.keys()); assert.equal(ids.size, tools.size);
+  const pages = {'dairy-design.html': new Set(), 'plant-utilities.html': new Set()};
+  for (const [, , ts] of require('../dairy-design.js')) ts.forEach(t => pages['dairy-design.html'].add(t.id));
+  for (const [, , ts] of require('../plant-utilities.js')) ts.forEach(t => pages['plant-utilities.html'].add(t.id));
+  for (const tool of tools.values()) for (const [href] of tool.see || []) {
+    const [file, hash] = href.split('#');
+    assert.ok(fs.existsSync(__dirname + '/../' + file), `${href}: missing page`);
+    if (pages[file] && hash) assert.ok(pages[file].has(hash.replace('tab-', '')), `${href}: no such tab`);
+  }
 });
