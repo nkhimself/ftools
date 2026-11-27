@@ -26,10 +26,10 @@ def nav(cur):
     return h
 
 FOOTER = '''<footer class="ft"><div class="wrap fg">
-<div><a class="brand fbrand" href="index.html"><img src="logo.svg" width="76" height="76" alt=""><span><b>لوگارینا</b><small>LOGARINA</small></span></a><p class="mot">محاسبهٔ دقیق، برای غذای بهتر</p><p style="margin:6px 0 0;font-size:13px">ابزارهای چندمرحله‌ای مهندسی صنایع غذایی، به زبان فارسی.</p></div>
+<div><a class="brand fbrand" href="index.html"><img src="logo.svg" width="76" height="76" alt=""><span><b>لُگارینا</b><small>LOGARINA</small></span></a><p class="mot">محاسبهٔ دقیق، برای غذای بهتر</p><p style="margin:6px 0 0;font-size:13px">ابزارهای چندمرحله‌ای مهندسی صنایع غذایی، به زبان فارسی.</p></div>
 <div><h4>ابزارها</h4><ul><li><a href="thermal.html">فرآیند حرارتی</a></li><li><a href="formulation.html">فرمولاسیون</a></li><li><a href="fitting.html">برازش مدل</a></li><li><a href="dairy.html">لبنیات</a></li><li><a href="bakery.html">شیرینی و نان</a></li><li><a href="beverage.html">نوشیدنی و آب</a></li><li><a href="coldstore.html">سردخانه</a></li></ul></div>
 <div><h4>طراحی کارخانه</h4><ul><li><a href="design.html">همهٔ بخش‌ها</a></li><li><a href="dairy-design.html">کارخانهٔ لبنیات</a></li><li><a href="plant-utilities.html">تأسیسات کارخانه</a></li></ul></div>
-<div><h4>لوگارینا</h4><ul><li><a href="units.html">تبدیل واحد</a></li><li><a href="glossary.html">واژه‌نامه</a></li><li><a href="results.html">نتایج ذخیره‌شده</a></li><li><a href="about.html">روش‌ها و محدودیت‌ها</a></li><li><a href="signup.html">ثبت‌نام رایگان</a></li><li><a href="login.html">ورود</a></li></ul></div>
+<div><h4>لُگارینا</h4><ul><li><a href="units.html">تبدیل واحد</a></li><li><a href="glossary.html">واژه‌نامه</a></li><li><a href="results.html">نتایج ذخیره‌شده</a></li><li><a href="about.html">روش‌ها و محدودیت‌ها</a></li><li><a href="signup.html">ثبت‌نام رایگان</a></li><li><a href="login.html">ورود</a></li></ul></div>
 </div><div class="wrap fb">محاسبه‌ها در مرورگر شما اجرا می‌شوند و داده‌های ورودی‌تان به جایی ارسال نمی‌شود. نتایج محاسباتی‌اند و جایگزین تأیید فرآیند توسط مرجع صلاحیت‌دار یا آزمون آزمایشگاهی نیستند.</div></footer>'''
 
 ICON_FACTORY = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40V22l12 7v-7l12 7v-7l12 7v11z"/><path d="M12 40v-6M22 40v-6M32 40v-6"/><path d="M34 22V9h6v13"/></svg>'
@@ -41,7 +41,7 @@ def page(title, desc, body, cur, scripts):
     head = base[:base.index('<title>')]
     hdr = re.search(r'<header class="hd2">.*?</header>', base, re.S).group(0)
     hdr = re.sub(r'<nav class="mainnav".*?</nav>', lambda m: nav(cur), hdr, flags=re.S)
-    return (head + '<title>%s | لوگارینا</title>\n<meta name="description" content="%s">' % (title, desc) +
+    return (head + '<title>%s | لُگارینا</title>\n<meta name="description" content="%s">' % (title, desc) +
             base[base.index('<meta name="theme-color"'):base.index('<body>')] + '<body>\n' + hdr + '\n<main class="wrap">\n' + body + '\n</main>\n' + FOOTER +
             '\n' + ''.join('<script src="%s"></script>\n' % s for s in scripts) + '</body></html>\n')
 

@@ -52,8 +52,8 @@ button.pri:hover { background:var(--pri2); }
   isolation:isolate; overflow:visible; min-height:580px; margin:24px 0 0;
   padding:clamp(30px,5.4vw,76px); border:0; border-radius:var(--r) var(--r) 0 0; gap:0;
   color:#f6f7ed; background-color:#192c21;
-  background-image:linear-gradient(270deg,#14271e 2%,#182c22f5 27%,#203528b8 45%,transparent 70%),url("grain-study.svg");
-  background-size:100% 100%,cover; background-position:center,left 42%;
+  background-image:linear-gradient(270deg,#14271e 4%,#14271e 37%,#14271ef2 45%,#14271e30 62%,transparent 76%),url("wheat-field.webp");
+  background-size:100% 100%,auto 100%;background-position:center,left center;background-repeat:no-repeat;
 }
 .hero-copy { position:relative;z-index:2;min-width:0; }
 .eyebrow,.sec-index { display:inline-block;font-size:12px;font-weight:740; }
@@ -71,12 +71,6 @@ button.pri:hover { background:var(--pri2); }
 .hero .hero-method { color:#f6f7ed;background:#13261f47;border-color:#b3c9ac80; }
 .hero .hero-method:hover { background:#304736;border-color:#dce6a8; }
 .hero :focus-visible,.home-tiles :focus-visible,.ft :focus-visible,.cta :focus-visible { outline-color:#e3ebae; }
-.hero-caption {
-  position:absolute;left:25px;bottom:24px;display:flex;align-items:center;gap:12px;direction:ltr;
-  color:#e4ead2;background:#17281dc9;border:1px solid #e6edca48;border-radius:4px;padding:7px 11px;
-  font:600 9px/1.2 system-ui,sans-serif;letter-spacing:.15em;
-}
-.hero-caption span+span::before { content:"";display:inline-block;width:15px;border-top:1px solid;vertical-align:3px;margin-right:12px; }
 .home-tiles { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:0 0 var(--r) var(--r);overflow:hidden; }
 .home-tiles a { display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;min-width:0;min-height:100px;padding:15px clamp(10px,2vw,27px);text-decoration:none;color:#202c21;background:#e0e7c2;transition:background .18s; }
 .home-tiles a:nth-child(2) { background:#f1ebd7; }
@@ -113,15 +107,15 @@ button.pri:hover { background:var(--pri2); }
 .factory .tool:hover { background:var(--card); }
 .factory .tool .ico { background:var(--card); }
 .feat>div,.steps>div,.soon>div { border-radius:var(--r);padding:20px; }
-.cta { background:linear-gradient(90deg,#172c23e8,#172c23),url("grain-study.svg") left center/cover;border-radius:var(--r);padding:clamp(21px,4vw,45px); }
+.cta { background:linear-gradient(90deg,#172c23e8,#172c23),url("wheat-field.webp") left center/cover;border-radius:var(--r);padding:clamp(21px,4vw,45px); }
 
 /* Calm, high contrast calculator workspace */
 main.wrap>h1 {
   margin:24px 0 12px;padding:clamp(20px,3.9vw,48px);border-radius:var(--r);color:#f6f7ed;
-  background:linear-gradient(270deg,#172b22 2%,#172b22f4 61%,#25372a83),url("grain-study.svg") left 39%/cover;
+  background:linear-gradient(270deg,#172b22 2%,#172b22f4 61%,#25372a83),url("wheat-field.webp") left 48%/cover;
   font-size:clamp(27px,4.3vw,50px);line-height:1.36;letter-spacing:-.025em;
 }
-main.wrap>h1::before { content:"لوگارینا / مهندسی صنایع غذایی";display:block;color:#dce6a8;font-size:12px;letter-spacing:0;margin-bottom:10px;font-weight:620; }
+main.wrap>h1::before { content:"لُگارینا / مهندسی صنایع غذایی";display:block;color:#dce6a8;font-size:12px;letter-spacing:0;margin-bottom:10px;font-weight:620; }
 main.wrap>p.lead { max-width:88ch;margin-bottom:20px; }
 main .card { padding:clamp(14px,2.25vw,27px);border-radius:var(--r);min-width:0; }
 main .grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr)); }
@@ -137,7 +131,7 @@ main input[type=file] { max-width:100%; }
 .tabs button.on { border:1px solid var(--line);background:var(--card);box-shadow:0 2px 3px #14291c11; }
 .stat .sv { font-variant-numeric:tabular-nums;overflow-wrap:anywhere; }
 .auth { border-radius:var(--r);margin-top:25px;box-shadow:none; }
-.auth-side { background:linear-gradient(155deg,#142a21 10%,#142a21e6 50%,#142a215c),url("grain-study.svg") left center/cover; }
+.auth-side { background:linear-gradient(155deg,#142a21 10%,#142a21e6 50%,#142a215c),url("wheat-field.webp") left center/cover; }
 .auth-form,.auth-side { padding:clamp(20px,4vw,50px); }
 .auth-form h1 { font-size:clamp(24px,3vw,36px); }
 
@@ -153,7 +147,7 @@ main input[type=file] { max-width:100%; }
 .fbrand b { font-size:23px; }
 
 @media(max-width:1000px) {
-  .home .hero { grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);min-height:500px;background-position:center,34% 45%; }
+  .home .hero { grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);min-height:500px; }
   .home .cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media(max-width:760px) {
@@ -166,10 +160,9 @@ main input[type=file] { max-width:100%; }
   .mainnav details.dd>summary,.mainnav a.solo { padding:4px 7px;font-size:13px; }
   .mainnav details.dd .menu { inset-inline:var(--gutter); }
   .home .hero { min-height:0;grid-template-columns:1fr;align-items:end;padding:clamp(180px,48vw,290px) 19px 25px;margin-top:12px;
-    background-image:linear-gradient(0deg,#14271e 0%,#14271ef7 25%,#14271eac 48%,transparent 82%),url("grain-study.svg");
-    background-size:100% 100%,auto 108%;background-position:center,24% 18%; }
+    background-image:linear-gradient(0deg,#14271e 48%,#14271eeb 58%,#14271e00 90%),url("wheat-field.webp");
+    background-size:100% 100%,max(100%, 465px) auto;background-position:center,72% top; }
   .home .hero h1 { font-size:clamp(38px,8.5vw,66px);margin:13px 0; }
-  .hero-caption { bottom:auto;top:13px;left:12px; }
   .home-tiles { grid-template-columns:1fr; }
   .home-tiles a { min-height:70px;padding-inline:16px; }
   .ft .fg { grid-template-columns:1fr 1fr; }
